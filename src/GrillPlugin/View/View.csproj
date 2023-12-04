@@ -96,9 +96,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj">
+    <ProjectReference Include="..\ModelBuilder\ModelBuilder\ModelBuilder.csproj">
+      <Project>{cef32b94-23d3-4601-9a5c-219b43371939}</Project>
+      <Name>ModelBuilder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\ModelData.csproj">
       <Project>{53a6c1ad-e91f-49b5-b9b3-023ada8f1904}</Project>
-      <Name>Model</Name>
+      <Name>ModelData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

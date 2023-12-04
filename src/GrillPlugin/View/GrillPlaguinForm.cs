@@ -5,6 +5,7 @@
     using System.Drawing;
     using System.Windows.Forms;
     using GrillPlugin.Model;
+    using ModelAPI;
 
     /// <summary>
     /// Главная форма приложения.
@@ -330,7 +331,8 @@
             else
             {
                 parameters.InitHoleGrooveCount();
-                DialogResult = DialogResult.OK;
+                AutoCadBuilder builder = new AutoCadBuilder(parameters);
+                builder.BuildGrill();
                 Close();
             }
         }
