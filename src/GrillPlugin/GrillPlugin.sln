@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelConnector", "ModelAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBuilder", "ModelBuilder\ModelBuilder\ModelBuilder.csproj", "{CEF32B94-23D3-4601-9A5C-219B43371939}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "Testing\UnitTests\UnitTests.csproj", "{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Testing\UnitTests\UnitTests.csproj", "{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +35,10 @@ Global
 		{CEF32B94-23D3-4601-9A5C-219B43371939}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEF32B94-23D3-4601-9A5C-219B43371939}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEF32B94-23D3-4601-9A5C-219B43371939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

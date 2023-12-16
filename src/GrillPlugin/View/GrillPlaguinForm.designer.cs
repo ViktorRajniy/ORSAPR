@@ -490,7 +490,11 @@
 			this.Controls.Add(this.grooveGroupBox);
 			this.Controls.Add(this.legsGroupBox);
 			this.Controls.Add(this.boxGroupBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "GrillPluginForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "GrillPlugin";
 			this.TextChanged += new System.EventHandler(this.TextBoxTextChange);
 			this.boxGroupBox.ResumeLayout(false);
