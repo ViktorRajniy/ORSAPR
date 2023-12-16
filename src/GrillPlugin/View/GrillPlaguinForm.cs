@@ -77,6 +77,16 @@
                     parameters.SetValue(currentParameter, value);
                     parameters.UpdateBorders();
                     CheckDependedTextBoxsCorrect();
+                    CheckDependedTextBoxCorrect(holeDiameterTextBox, ParameterType.HoleDiameter);
+                    UpdateLablesBorders();
+                }
+
+                if (currentParameter == ParameterType.HoleDiameter)
+                {
+                    _errorParameters[currentParameter] = string.Empty;
+                    parameters.SetValue(currentParameter, value);
+                    parameters.UpdateBorders();
+                    CheckDependedTextBoxsCorrect();
                     UpdateLablesBorders();
                 }
                 else
@@ -137,9 +147,8 @@
         {
             CheckDependedTextBoxCorrect(legDiameterTextBox, ParameterType.LegDiameter);
             CheckDependedTextBoxCorrect(grooveDistanceTextBox, ParameterType.GrooveDistance);
-            CheckDependedTextBoxCorrect(holeDiameterTextBox, ParameterType.HoleDiameter);
-            CheckDependedTextBoxCorrect(holeDistanceTextBox, ParameterType.HoleDistance);
             CheckDependedTextBoxCorrect(holeHeightTextBox, ParameterType.HoleHeight);
+            CheckDependedTextBoxCorrect(holeDistanceTextBox, ParameterType.HoleDistance);
         }
 
         /// <summary>
