@@ -2,7 +2,6 @@
 {
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
-    // using CadApplication = Autodesk.AutoCAD.ApplicationServices.Core.Application;
     using GrillPlugin.Model;
     using Autodesk.AutoCAD.Geometry;
     using ModelBuilder;
