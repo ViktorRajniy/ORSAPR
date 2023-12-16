@@ -251,10 +251,11 @@
         private void CalculateHoleCount()
         {
             double holePlace =
-                (_parametersValue[ParameterType.BoxLength].Value
-                 / (_parametersValue[ParameterType.HoleDistance].Value
-                    + _parametersValue[ParameterType.HoleDiameter].Value))
-                - _parametersValue[ParameterType.HoleDistance].Value;
+                (_parametersValue[ParameterType.BoxLength].Value -
+                (2 * _parametersValue[ParameterType.BoxWallThickness].Value)
+                - _parametersValue[ParameterType.HoleDiameter].Value) /
+                (_parametersValue[ParameterType.HoleDiameter].Value +
+                _parametersValue[ParameterType.HoleDistance].Value);
             _holeCount = (int)holePlace;
         }
 
@@ -264,10 +265,11 @@
         private void CalculateGrooveCount()
         {
             double groovePlace =
-                (_parametersValue[ParameterType.BoxLength].Value
-                 / (_parametersValue[ParameterType.GrooveDistance].Value
-                    + _parametersValue[ParameterType.GrooveDiameter].Value))
-                - _parametersValue[ParameterType.GrooveDistance].Value;
+                (_parametersValue[ParameterType.BoxLength].Value -
+                (2 * _parametersValue[ParameterType.BoxWallThickness].Value)
+                - _parametersValue[ParameterType.GrooveDiameter].Value) /
+                (_parametersValue[ParameterType.GrooveDiameter].Value +
+                _parametersValue[ParameterType.GrooveDistance].Value);
             _grooveCount = (int)groovePlace;
         }
 
