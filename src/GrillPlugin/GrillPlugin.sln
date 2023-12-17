@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelBuilder", "ModelBuilde
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "Testing\UnitTests\UnitTests.csproj", "{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StressTesting", "StressTesting\StressTesting.csproj", "{A7FE4BE5-E6BF-4063-A0C3-3F034DD5A6BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AC63A8A-B8B3-401A-8ABD-DEB903DCC368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FE4BE5-E6BF-4063-A0C3-3F034DD5A6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FE4BE5-E6BF-4063-A0C3-3F034DD5A6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FE4BE5-E6BF-4063-A0C3-3F034DD5A6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FE4BE5-E6BF-4063-A0C3-3F034DD5A6BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
