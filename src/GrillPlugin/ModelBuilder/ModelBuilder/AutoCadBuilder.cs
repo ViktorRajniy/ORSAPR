@@ -13,16 +13,6 @@
     {
         private readonly Parameters _parameters;
 
-        // /// <summary>
-        // /// Активный документ (чертеж) в AutoCAD.
-        // /// </summary>
-        // private Document _document;
-
-        // /// <summary>
-        // /// База данных документа.
-        // /// </summary>
-        // private Database _database;
-
         /// <summary>
         /// Конструктор класса с вложенными параметрами.
         /// </summary>

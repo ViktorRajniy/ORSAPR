@@ -1,7 +1,5 @@
 ﻿namespace GrillPlugin.Model
 {
-    // using Autodesk.AutoCAD.ApplicationServices;
-    // using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Runtime;
 
     /// <summary>
