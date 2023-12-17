@@ -6,9 +6,14 @@ using Autodesk.AutoCAD.Runtime;
 using System.IO;
 using System;
 
+/// <summary>
+/// Класс нагрузочного тестирования.
+/// </summary>
 public class StressTests
 {
-
+    /// <summary>
+    /// Метод вызывающий в AutoCAD нагрузочное тестирование.
+    /// </summary>
     [CommandMethod("StressTest")]
     public void StressTest()
     {

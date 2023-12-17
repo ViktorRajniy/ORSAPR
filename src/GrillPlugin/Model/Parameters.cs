@@ -141,47 +141,80 @@
             {
                 {
                 ParameterType.BoxLength,
-                new Parameter(_minBoxLength, _minBoxLength, _maxBoxLength)
+                new Parameter(
+                    _minBoxLength,
+                    _minBoxLength,
+                    _maxBoxLength)
                 },
                 {
                 ParameterType.BoxWidth,
-                new Parameter(_minBoxWidth, _minBoxWidth, _maxBoxWidth)
+                new Parameter(
+                    _minBoxWidth,
+                    _minBoxWidth,
+                    _maxBoxWidth)
                 },
                 {
                 ParameterType.BoxWallThickness,
-                new Parameter(_minBoxThickness, _minBoxThickness, _maxBoxThickness)
+                new Parameter(
+                    _minBoxThickness,
+                    _minBoxThickness,
+                    _maxBoxThickness)
                 },
                 {
                 ParameterType.BoxHeight,
-                new Parameter(_minBoxHeight, _minBoxHeight, _maxBoxHeight)
+                new Parameter(
+                    _minBoxHeight,
+                    _minBoxHeight,
+                    _maxBoxHeight)
                 },
                 {
                 ParameterType.LegHeight,
-                new Parameter(_minLegHeight, _minLegHeight, _maxLegHeight)
+                new Parameter(
+                    _minLegHeight,
+                    _minLegHeight,
+                    _maxLegHeight)
                 },
                 {
                 ParameterType.LegDiameter,
-                new Parameter(_minLegDiameter, _minLegDiameter, _maxLegDiameter)
+                new Parameter(
+                    _minLegDiameter,
+                    _minLegDiameter,
+                    _maxLegDiameter)
                 },
                 {
                 ParameterType.GrooveDiameter,
-                new Parameter(_minGrooveDiameter, _minGrooveDiameter, _maxGrooveDiameter)
+                new Parameter(
+                    _minGrooveDiameter,
+                    _minGrooveDiameter,
+                    _maxGrooveDiameter)
                 },
                 {
                 ParameterType.GrooveDistance,
-                new Parameter(_minGrooveDistance, _minGrooveDistance, _maxGrooveDistance)
+                new Parameter(
+                    _minGrooveDistance,
+                    _minGrooveDistance,
+                    _maxGrooveDistance)
                 },
                 {
                 ParameterType.HoleDiameter,
-                new Parameter(_minHoleDiameter, _minHoleDiameter, _maxHoleDiameter)
+                new Parameter(
+                    _minHoleDiameter,
+                    _minHoleDiameter,
+                    _maxHoleDiameter)
                 },
                 {
                 ParameterType.HoleHeight,
-                new Parameter(_minHoleHeight, _minHoleHeight, _maxHoleHeight)
+                new Parameter(
+                    _minHoleHeight,
+                    _minHoleHeight,
+                    _maxHoleHeight)
                 },
                 {
                 ParameterType.HoleDistance,
-                new Parameter(_minHoleDistance, _minHoleDistance, _maxHoleDistance)
+                new Parameter(
+                    _minHoleDistance,
+                    _minHoleDistance,
+                    _maxHoleDistance)
                 }
             };
         }
@@ -278,8 +311,12 @@
         /// </summary>
         private void NewHoleDistanceBorders()
         {
-            _parametersValue[ParameterType.HoleDistance].MinValue = _parametersValue[ParameterType.HoleDiameter].Value;
-            _parametersValue[ParameterType.HoleDistance].MaxValue = _parametersValue[ParameterType.BoxLength].Value - ((2 * _parametersValue[ParameterType.BoxWallThickness].Value) + _parametersValue[ParameterType.HoleDiameter].Value);
+            _parametersValue[ParameterType.HoleDistance].MinValue =
+                _parametersValue[ParameterType.HoleDiameter].Value;
+            _parametersValue[ParameterType.HoleDistance].MaxValue =
+                _parametersValue[ParameterType.BoxLength].Value -
+                ((2 * _parametersValue[ParameterType.BoxWallThickness].Value)
+                 + _parametersValue[ParameterType.HoleDiameter].Value);
         }
 
         /// <summary>
@@ -287,8 +324,13 @@
         /// </summary>
         private void NewHoleHeightBorders()
         {
-            _parametersValue[ParameterType.HoleHeight].MinValue = _parametersValue[ParameterType.BoxWallThickness].Value + (_parametersValue[ParameterType.HoleDiameter].Value / 2);
-            _parametersValue[ParameterType.HoleHeight].MaxValue = (_parametersValue[ParameterType.BoxHeight].Value / 2) + _parametersValue[ParameterType.BoxWallThickness].Value - (_parametersValue[ParameterType.HoleDiameter].Value / 2);
+            _parametersValue[ParameterType.HoleHeight].MinValue =
+                _parametersValue[ParameterType.BoxWallThickness].Value +
+                (_parametersValue[ParameterType.HoleDiameter].Value / 2);
+            _parametersValue[ParameterType.HoleHeight].MaxValue =
+                (_parametersValue[ParameterType.BoxHeight].Value / 2) +
+                _parametersValue[ParameterType.BoxWallThickness].Value -
+                (_parametersValue[ParameterType.HoleDiameter].Value / 2);
         }
 
         /// <summary>
@@ -296,8 +338,10 @@
         /// </summary>
         private void NewHoleDiameterBorders()
         {
-            _parametersValue[ParameterType.HoleDiameter].MinValue = _minHoleDiameter;
-            _parametersValue[ParameterType.HoleDiameter].MaxValue = _parametersValue[ParameterType.BoxHeight].Value / 2;
+            _parametersValue[ParameterType.HoleDiameter].MinValue =
+                _minHoleDiameter;
+            _parametersValue[ParameterType.HoleDiameter].MaxValue =
+                _parametersValue[ParameterType.BoxHeight].Value / 2;
         }
 
         /// <summary>
@@ -305,8 +349,12 @@
         /// </summary>
         private void NewGrooveDistanceBorders()
         {
-            _parametersValue[ParameterType.GrooveDistance].MinValue = _parametersValue[ParameterType.GrooveDiameter].Value;
-            _parametersValue[ParameterType.GrooveDistance].MaxValue = _parametersValue[ParameterType.BoxLength].Value - ((2 * _parametersValue[ParameterType.BoxWallThickness].Value) + _parametersValue[ParameterType.GrooveDiameter].Value);
+            _parametersValue[ParameterType.GrooveDistance].MinValue =
+                _parametersValue[ParameterType.GrooveDiameter].Value;
+            _parametersValue[ParameterType.GrooveDistance].MaxValue =
+                _parametersValue[ParameterType.BoxLength].Value -
+                ((2 * _parametersValue[ParameterType.BoxWallThickness].Value) +
+                 _parametersValue[ParameterType.GrooveDiameter].Value);
         }
 
         /// <summary>
@@ -314,8 +362,10 @@
         /// </summary>
         private void NewLegDiameterBorders()
         {
-            _parametersValue[ParameterType.LegDiameter].MinValue = 2 * _parametersValue[ParameterType.BoxWallThickness].Value;
-            _parametersValue[ParameterType.LegDiameter].MaxValue = _parametersValue[ParameterType.BoxWidth].Value / 2;
+            _parametersValue[ParameterType.LegDiameter].MinValue =
+                2 * _parametersValue[ParameterType.BoxWallThickness].Value;
+            _parametersValue[ParameterType.LegDiameter].MaxValue =
+                _parametersValue[ParameterType.BoxWidth].Value / 2;
         }
     }
 }
