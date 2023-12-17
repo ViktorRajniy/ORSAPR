@@ -242,7 +242,7 @@
                     startPoint.Y,
                     startPoint.Z);
 
-                    for (int i = 0; i < (count / 2); i++)
+                    for (int i = 0; i < count / 2; i++)
                     {
                         nextPoint = new Point3d(
                             start.X + (side * (i * (diameter + distance))),
@@ -261,6 +261,13 @@
             return circleArray;
         }
 
+        /// <summary>
+        /// Метод строит горизонтальный цилиндр по заданным параметрам.
+        /// </summary>
+        /// <param name="center">Центр окружности начала.</param>
+        /// <param name="diameter">Диаметр цилиндра.</param>
+        /// <param name="deep">Глубина цилиндра.</param>
+        /// <returns></returns>
         private Solid3d BuildHorisontalCylinder(Point3d center, double diameter, double deep)
         {
             Solid3d cylinder = new Solid3d();

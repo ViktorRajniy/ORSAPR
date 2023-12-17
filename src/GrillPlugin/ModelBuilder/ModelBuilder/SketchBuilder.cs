@@ -3,6 +3,9 @@
     using Autodesk.AutoCAD.DatabaseServices;
     using Autodesk.AutoCAD.Geometry;
 
+    /// <summary>
+    /// Класс, помогающий строить эскизы для Builder.
+    /// </summary>
     public class SketchBuilder
     {
         /// <summary>
