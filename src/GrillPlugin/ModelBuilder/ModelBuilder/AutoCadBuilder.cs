@@ -11,6 +11,9 @@
     /// </summary>
     public class AutoCadBuilder
     {
+        /// <summary>
+        /// Принимаемые параметры мангала.
+        /// </summary>
         private readonly Parameters _parameters;
 
         /// <summary>
