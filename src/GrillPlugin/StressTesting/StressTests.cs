@@ -22,7 +22,9 @@ public class StressTests
 
         Parameters parameters = new Parameters();
 
-        StreamWriter writer = new StreamWriter($"log.txt", false);
+        parameters = InitMaxParameters(parameters);
+
+        StreamWriter writer = new StreamWriter($"MaxLog.txt", false);
 
         AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters);
 
@@ -46,5 +48,38 @@ public class StressTests
         writer.Close();
         writer.Dispose();
         Console.Write($"End {new ComputerInfo().TotalPhysicalMemory}");
+    }
+
+    /// <summary>
+    /// Метод инициализирует Параметры максимальными значениями.
+    /// </summary>
+    /// <returns>Экземпляр Параметрс с максимальными значениями.</returns>
+    public Parameters InitMaxParameters(Parameters parameters)
+    {
+        foreach (ParameterType parameterType in Enum.GetValues(typeof(ParameterType)))
+        {
+            var parameter = parameters.GetParameter(parameterType);
+            double value = parameter.MaxValue;
+            parameters.SetValue(parameterType, value);
+        }
+
+        return parameters;
+    }
+
+    /// <summary>
+    /// Метод инициализирует Параметры средними значениями.
+    /// </summary>
+    /// <returns>Экземпляр Параметрс со средними значениями.</returns>
+    public Parameters InitMiddleParameters(Parameters parameters)
+    {
+        foreach (ParameterType parameterType in Enum.GetValues(typeof(ParameterType)))
+        {
+            var parameter = parameters.GetParameter(parameterType);
+            double value = ((parameter.MaxValue - parameter.MaxValue) / 2) +
+                           parameter.MaxValue;
+            parameters.SetValue(parameterType, value);
+        }
+
+        return parameters;
     }
 }
