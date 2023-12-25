@@ -66,7 +66,14 @@
 			this.holeDiameterTextBox = new System.Windows.Forms.TextBox();
 			this.holeDiameterLable = new System.Windows.Forms.Label();
 			this.buildButton = new System.Windows.Forms.Button();
+			this.holeCircleRadioButton = new System.Windows.Forms.RadioButton();
+			this.holeSolidRadioButton = new System.Windows.Forms.RadioButton();
+			this.grooveCircleRadioButton = new System.Windows.Forms.RadioButton();
+			this.grooveRectangleRadioButton = new System.Windows.Forms.RadioButton();
 			this.ErrorLable = new System.Windows.Forms.Label();
+			this.solidHoleHeightTextBox = new System.Windows.Forms.TextBox();
+			this.solidHoleHeightBorderLabel = new System.Windows.Forms.Label();
+			this.solidHoleHieghtLabel = new System.Windows.Forms.Label();
 			this.boxGroupBox.SuspendLayout();
 			this.legsGroupBox.SuspendLayout();
 			this.grooveGroupBox.SuspendLayout();
@@ -138,7 +145,7 @@
 			this.boxGroupBox.Controls.Add(this.boxHeightLable);
 			this.boxGroupBox.Location = new System.Drawing.Point(12, 12);
 			this.boxGroupBox.Name = "boxGroupBox";
-			this.boxGroupBox.Size = new System.Drawing.Size(436, 122);
+			this.boxGroupBox.Size = new System.Drawing.Size(317, 122);
 			this.boxGroupBox.TabIndex = 5;
 			this.boxGroupBox.TabStop = false;
 			this.boxGroupBox.Text = "Короб мангала";
@@ -220,7 +227,7 @@
 			this.legsGroupBox.Controls.Add(this.legHeightLable);
 			this.legsGroupBox.Location = new System.Drawing.Point(13, 140);
 			this.legsGroupBox.Name = "legsGroupBox";
-			this.legsGroupBox.Size = new System.Drawing.Size(435, 70);
+			this.legsGroupBox.Size = new System.Drawing.Size(316, 70);
 			this.legsGroupBox.TabIndex = 6;
 			this.legsGroupBox.TabStop = false;
 			this.legsGroupBox.Text = "Ножки";
@@ -231,9 +238,9 @@
 			this.legDiameterBorderLable.Location = new System.Drawing.Point(236, 42);
 			this.legDiameterBorderLable.Name = "legDiameterBorderLable";
 			this.legDiameterBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.legDiameterBorderLable.Size = new System.Drawing.Size(101, 13);
+			this.legDiameterBorderLable.Size = new System.Drawing.Size(54, 13);
 			this.legDiameterBorderLable.TabIndex = 17;
-			this.legDiameterBorderLable.Text = "[2*Ww] - [W/2], мм";
+			this.legDiameterBorderLable.Text = "N - N, мм";
 			// 
 			// legDiameterTextBox
 			// 
@@ -285,15 +292,17 @@
 			// 
 			// grooveGroupBox
 			// 
+			this.grooveGroupBox.Controls.Add(this.grooveRectangleRadioButton);
+			this.grooveGroupBox.Controls.Add(this.grooveCircleRadioButton);
 			this.grooveGroupBox.Controls.Add(this.grooveDiameterBorderLable);
-			this.grooveGroupBox.Controls.Add(this.grooveDistanceTextBox);
-			this.grooveGroupBox.Controls.Add(this.grooveDistanceLable);
-			this.grooveGroupBox.Controls.Add(this.grooveDistanceBorderLable);
 			this.grooveGroupBox.Controls.Add(this.grooveDiameterTextBox);
+			this.grooveGroupBox.Controls.Add(this.grooveDistanceBorderLable);
+			this.grooveGroupBox.Controls.Add(this.grooveDistanceLable);
 			this.grooveGroupBox.Controls.Add(this.grooveDiameterLable);
+			this.grooveGroupBox.Controls.Add(this.grooveDistanceTextBox);
 			this.grooveGroupBox.Location = new System.Drawing.Point(13, 216);
 			this.grooveGroupBox.Name = "grooveGroupBox";
-			this.grooveGroupBox.Size = new System.Drawing.Size(435, 76);
+			this.grooveGroupBox.Size = new System.Drawing.Size(316, 110);
 			this.grooveGroupBox.TabIndex = 18;
 			this.grooveGroupBox.TabStop = false;
 			this.grooveGroupBox.Text = "Пазы для шампуров";
@@ -301,7 +310,7 @@
 			// grooveDiameterBorderLable
 			// 
 			this.grooveDiameterBorderLable.AutoSize = true;
-			this.grooveDiameterBorderLable.Location = new System.Drawing.Point(236, 22);
+			this.grooveDiameterBorderLable.Location = new System.Drawing.Point(236, 74);
 			this.grooveDiameterBorderLable.Name = "grooveDiameterBorderLable";
 			this.grooveDiameterBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.grooveDiameterBorderLable.Size = new System.Drawing.Size(56, 13);
@@ -333,13 +342,13 @@
 			this.grooveDistanceBorderLable.Location = new System.Drawing.Point(236, 48);
 			this.grooveDistanceBorderLable.Name = "grooveDistanceBorderLable";
 			this.grooveDistanceBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.grooveDistanceBorderLable.Size = new System.Drawing.Size(134, 13);
+			this.grooveDistanceBorderLable.Size = new System.Drawing.Size(54, 13);
 			this.grooveDistanceBorderLable.TabIndex = 14;
-			this.grooveDistanceBorderLable.Text = "Dg - [L - (2*Ww + Dg)], мм";
+			this.grooveDistanceBorderLable.Text = "N - N, мм";
 			// 
 			// grooveDiameterTextBox
 			// 
-			this.grooveDiameterTextBox.Location = new System.Drawing.Point(130, 19);
+			this.grooveDiameterTextBox.Location = new System.Drawing.Point(130, 71);
 			this.grooveDiameterTextBox.Name = "grooveDiameterTextBox";
 			this.grooveDiameterTextBox.Size = new System.Drawing.Size(100, 20);
 			this.grooveDiameterTextBox.TabIndex = 13;
@@ -349,7 +358,7 @@
 			// grooveDiameterLable
 			// 
 			this.grooveDiameterLable.AutoSize = true;
-			this.grooveDiameterLable.Location = new System.Drawing.Point(54, 22);
+			this.grooveDiameterLable.Location = new System.Drawing.Point(54, 74);
 			this.grooveDiameterLable.Name = "grooveDiameterLable";
 			this.grooveDiameterLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.grooveDiameterLable.Size = new System.Drawing.Size(70, 13);
@@ -358,25 +367,30 @@
 			// 
 			// holeGroupBox
 			// 
+			this.holeGroupBox.Controls.Add(this.solidHoleHieghtLabel);
+			this.holeGroupBox.Controls.Add(this.solidHoleHeightBorderLabel);
+			this.holeGroupBox.Controls.Add(this.solidHoleHeightTextBox);
+			this.holeGroupBox.Controls.Add(this.holeSolidRadioButton);
+			this.holeGroupBox.Controls.Add(this.holeCircleRadioButton);
 			this.holeGroupBox.Controls.Add(this.holeDistanceTextBox);
 			this.holeGroupBox.Controls.Add(this.holeDistanceLable);
-			this.holeGroupBox.Controls.Add(this.holeDistanceBorderLable);
 			this.holeGroupBox.Controls.Add(this.holeDiameterBorderLable);
 			this.holeGroupBox.Controls.Add(this.holeHeightTextBox);
+			this.holeGroupBox.Controls.Add(this.holeDistanceBorderLable);
 			this.holeGroupBox.Controls.Add(this.holeHeightLable);
 			this.holeGroupBox.Controls.Add(this.holeHeightBorderLable);
 			this.holeGroupBox.Controls.Add(this.holeDiameterTextBox);
 			this.holeGroupBox.Controls.Add(this.holeDiameterLable);
-			this.holeGroupBox.Location = new System.Drawing.Point(13, 298);
+			this.holeGroupBox.Location = new System.Drawing.Point(13, 398);
 			this.holeGroupBox.Name = "holeGroupBox";
-			this.holeGroupBox.Size = new System.Drawing.Size(435, 107);
+			this.holeGroupBox.Size = new System.Drawing.Size(316, 123);
 			this.holeGroupBox.TabIndex = 19;
 			this.holeGroupBox.TabStop = false;
 			this.holeGroupBox.Text = "Отверстия для воздуха";
 			// 
 			// holeDistanceTextBox
 			// 
-			this.holeDistanceTextBox.Location = new System.Drawing.Point(130, 75);
+			this.holeDistanceTextBox.Location = new System.Drawing.Point(130, 42);
 			this.holeDistanceTextBox.Name = "holeDistanceTextBox";
 			this.holeDistanceTextBox.Size = new System.Drawing.Size(100, 20);
 			this.holeDistanceTextBox.TabIndex = 20;
@@ -386,7 +400,7 @@
 			// holeDistanceLable
 			// 
 			this.holeDistanceLable.AutoSize = true;
-			this.holeDistanceLable.Location = new System.Drawing.Point(6, 78);
+			this.holeDistanceLable.Location = new System.Drawing.Point(6, 45);
 			this.holeDistanceLable.Name = "holeDistanceLable";
 			this.holeDistanceLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.holeDistanceLable.Size = new System.Drawing.Size(118, 13);
@@ -396,26 +410,26 @@
 			// holeDistanceBorderLable
 			// 
 			this.holeDistanceBorderLable.AutoSize = true;
-			this.holeDistanceBorderLable.Location = new System.Drawing.Point(236, 78);
+			this.holeDistanceBorderLable.Location = new System.Drawing.Point(236, 45);
 			this.holeDistanceBorderLable.Name = "holeDistanceBorderLable";
 			this.holeDistanceBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.holeDistanceBorderLable.Size = new System.Drawing.Size(134, 13);
+			this.holeDistanceBorderLable.Size = new System.Drawing.Size(54, 13);
 			this.holeDistanceBorderLable.TabIndex = 18;
-			this.holeDistanceBorderLable.Text = "Dh - [L - (2*Ww + Dh)], мм";
+			this.holeDistanceBorderLable.Text = "N - N, мм";
 			// 
 			// holeDiameterBorderLable
 			// 
 			this.holeDiameterBorderLable.AutoSize = true;
-			this.holeDiameterBorderLable.Location = new System.Drawing.Point(236, 22);
+			this.holeDiameterBorderLable.Location = new System.Drawing.Point(235, 97);
 			this.holeDiameterBorderLable.Name = "holeDiameterBorderLable";
 			this.holeDiameterBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.holeDiameterBorderLable.Size = new System.Drawing.Size(81, 13);
+			this.holeDiameterBorderLable.Size = new System.Drawing.Size(58, 13);
 			this.holeDiameterBorderLable.TabIndex = 17;
-			this.holeDiameterBorderLable.Text = "10 - [Hg/2], мм";
+			this.holeDiameterBorderLable.Text = "10 - N, мм";
 			// 
 			// holeHeightTextBox
 			// 
-			this.holeHeightTextBox.Location = new System.Drawing.Point(130, 45);
+			this.holeHeightTextBox.Location = new System.Drawing.Point(129, 68);
 			this.holeHeightTextBox.Name = "holeHeightTextBox";
 			this.holeHeightTextBox.Size = new System.Drawing.Size(100, 20);
 			this.holeHeightTextBox.TabIndex = 16;
@@ -425,7 +439,7 @@
 			// holeHeightLable
 			// 
 			this.holeHeightLable.AutoSize = true;
-			this.holeHeightLable.Location = new System.Drawing.Point(24, 48);
+			this.holeHeightLable.Location = new System.Drawing.Point(23, 71);
 			this.holeHeightLable.Name = "holeHeightLable";
 			this.holeHeightLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.holeHeightLable.Size = new System.Drawing.Size(100, 13);
@@ -435,16 +449,16 @@
 			// holeHeightBorderLable
 			// 
 			this.holeHeightBorderLable.AutoSize = true;
-			this.holeHeightBorderLable.Location = new System.Drawing.Point(236, 48);
+			this.holeHeightBorderLable.Location = new System.Drawing.Point(235, 71);
 			this.holeHeightBorderLable.Name = "holeHeightBorderLable";
 			this.holeHeightBorderLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.holeHeightBorderLable.Size = new System.Drawing.Size(193, 13);
+			this.holeHeightBorderLable.Size = new System.Drawing.Size(54, 13);
 			this.holeHeightBorderLable.TabIndex = 14;
-			this.holeHeightBorderLable.Text = "[Dh/2 - Ww] -[Hg/2 - Dh/2 + Ww] , мм";
+			this.holeHeightBorderLable.Text = "N -N , мм";
 			// 
 			// holeDiameterTextBox
 			// 
-			this.holeDiameterTextBox.Location = new System.Drawing.Point(130, 19);
+			this.holeDiameterTextBox.Location = new System.Drawing.Point(129, 94);
 			this.holeDiameterTextBox.Name = "holeDiameterTextBox";
 			this.holeDiameterTextBox.Size = new System.Drawing.Size(100, 20);
 			this.holeDiameterTextBox.TabIndex = 13;
@@ -454,7 +468,7 @@
 			// holeDiameterLable
 			// 
 			this.holeDiameterLable.AutoSize = true;
-			this.holeDiameterLable.Location = new System.Drawing.Point(54, 22);
+			this.holeDiameterLable.Location = new System.Drawing.Point(53, 97);
 			this.holeDiameterLable.Name = "holeDiameterLable";
 			this.holeDiameterLable.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.holeDiameterLable.Size = new System.Drawing.Size(70, 13);
@@ -463,27 +477,102 @@
 			// 
 			// buildButton
 			// 
-			this.buildButton.Location = new System.Drawing.Point(454, 343);
+			this.buildButton.Location = new System.Drawing.Point(13, 527);
 			this.buildButton.Name = "buildButton";
-			this.buildButton.Size = new System.Drawing.Size(280, 60);
+			this.buildButton.Size = new System.Drawing.Size(88, 60);
 			this.buildButton.TabIndex = 20;
 			this.buildButton.Text = "Построить";
 			this.buildButton.UseVisualStyleBackColor = true;
 			this.buildButton.Click += new System.EventHandler(this.BuildButton_Click);
 			// 
+			// holeCircleRadioButton
+			// 
+			this.holeCircleRadioButton.AutoSize = true;
+			this.holeCircleRadioButton.Location = new System.Drawing.Point(9, 19);
+			this.holeCircleRadioButton.Name = "holeCircleRadioButton";
+			this.holeCircleRadioButton.Size = new System.Drawing.Size(79, 17);
+			this.holeCircleRadioButton.TabIndex = 21;
+			this.holeCircleRadioButton.TabStop = true;
+			this.holeCircleRadioButton.Text = "Отверстия";
+			this.holeCircleRadioButton.UseVisualStyleBackColor = true;
+			this.holeCircleRadioButton.CheckedChanged += new System.EventHandler(this.HoleCircleRadioButton_CheckedChanged);
+			// 
+			// holeSolidRadioButton
+			// 
+			this.holeSolidRadioButton.AutoSize = true;
+			this.holeSolidRadioButton.Location = new System.Drawing.Point(94, 19);
+			this.holeSolidRadioButton.Name = "holeSolidRadioButton";
+			this.holeSolidRadioButton.Size = new System.Drawing.Size(111, 17);
+			this.holeSolidRadioButton.TabIndex = 22;
+			this.holeSolidRadioButton.TabStop = true;
+			this.holeSolidRadioButton.Text = "Сплошной вырез";
+			this.holeSolidRadioButton.UseVisualStyleBackColor = true;
+			this.holeSolidRadioButton.CheckedChanged += new System.EventHandler(this.HoleSolidRadioButton_CheckedChanged);
+			// 
+			// grooveCircleRadioButton
+			// 
+			this.grooveCircleRadioButton.AutoSize = true;
+			this.grooveCircleRadioButton.Location = new System.Drawing.Point(9, 19);
+			this.grooveCircleRadioButton.Name = "grooveCircleRadioButton";
+			this.grooveCircleRadioButton.Size = new System.Drawing.Size(87, 17);
+			this.grooveCircleRadioButton.TabIndex = 23;
+			this.grooveCircleRadioButton.TabStop = true;
+			this.grooveCircleRadioButton.Text = "Окружность";
+			this.grooveCircleRadioButton.UseVisualStyleBackColor = true;
+			// 
+			// grooveRectangleRadioButton
+			// 
+			this.grooveRectangleRadioButton.AutoSize = true;
+			this.grooveRectangleRadioButton.Location = new System.Drawing.Point(102, 19);
+			this.grooveRectangleRadioButton.Name = "grooveRectangleRadioButton";
+			this.grooveRectangleRadioButton.Size = new System.Drawing.Size(105, 17);
+			this.grooveRectangleRadioButton.TabIndex = 24;
+			this.grooveRectangleRadioButton.TabStop = true;
+			this.grooveRectangleRadioButton.Text = "Прямоугольник";
+			this.grooveRectangleRadioButton.UseVisualStyleBackColor = true;
+			// 
 			// ErrorLable
 			// 
 			this.ErrorLable.AutoSize = true;
-			this.ErrorLable.Location = new System.Drawing.Point(464, 25);
+			this.ErrorLable.Location = new System.Drawing.Point(104, 527);
+			this.ErrorLable.MaximumSize = new System.Drawing.Size(230, 0);
 			this.ErrorLable.Name = "ErrorLable";
-			this.ErrorLable.Size = new System.Drawing.Size(0, 13);
+			this.ErrorLable.Size = new System.Drawing.Size(29, 13);
 			this.ErrorLable.TabIndex = 22;
+			this.ErrorLable.Text = "Error";
+			// 
+			// solidHoleHeightTextBox
+			// 
+			this.solidHoleHeightTextBox.Location = new System.Drawing.Point(130, 42);
+			this.solidHoleHeightTextBox.Name = "solidHoleHeightTextBox";
+			this.solidHoleHeightTextBox.Size = new System.Drawing.Size(100, 20);
+			this.solidHoleHeightTextBox.TabIndex = 23;
+			// 
+			// solidHoleHeightBorderLabel
+			// 
+			this.solidHoleHeightBorderLabel.AutoSize = true;
+			this.solidHoleHeightBorderLabel.Location = new System.Drawing.Point(236, 45);
+			this.solidHoleHeightBorderLabel.Name = "solidHoleHeightBorderLabel";
+			this.solidHoleHeightBorderLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.solidHoleHeightBorderLabel.Size = new System.Drawing.Size(54, 13);
+			this.solidHoleHeightBorderLabel.TabIndex = 24;
+			this.solidHoleHeightBorderLabel.Text = "N - N, мм";
+			// 
+			// solidHoleHieghtLabel
+			// 
+			this.solidHoleHieghtLabel.AutoSize = true;
+			this.solidHoleHieghtLabel.Location = new System.Drawing.Point(19, 45);
+			this.solidHoleHieghtLabel.Name = "solidHoleHieghtLabel";
+			this.solidHoleHieghtLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.solidHoleHieghtLabel.Size = new System.Drawing.Size(103, 13);
+			this.solidHoleHieghtLabel.TabIndex = 25;
+			this.solidHoleHieghtLabel.Text = "Высота выреза Hh";
 			// 
 			// GrillPluginForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(742, 417);
+			this.ClientSize = new System.Drawing.Size(529, 607);
 			this.Controls.Add(this.ErrorLable);
 			this.Controls.Add(this.buildButton);
 			this.Controls.Add(this.holeGroupBox);
@@ -550,7 +639,14 @@
 		private System.Windows.Forms.Label holeDistanceLable;
 		private System.Windows.Forms.Label holeDistanceBorderLable;
 		private System.Windows.Forms.Button buildButton;
+        private System.Windows.Forms.RadioButton holeSolidRadioButton;
+        private System.Windows.Forms.RadioButton holeCircleRadioButton;
+        private System.Windows.Forms.RadioButton grooveRectangleRadioButton;
+        private System.Windows.Forms.RadioButton grooveCircleRadioButton;
         private System.Windows.Forms.Label ErrorLable;
+        private System.Windows.Forms.TextBox solidHoleHeightTextBox;
+        private System.Windows.Forms.Label solidHoleHeightBorderLabel;
+        private System.Windows.Forms.Label solidHoleHieghtLabel;
     }
 }
 

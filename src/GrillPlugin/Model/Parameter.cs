@@ -56,7 +56,15 @@
         public double MinValue
         {
             get => _min;
-            set => _min = value;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("минимальное значение меньше нуля");
+                }
+
+                _min = value;
+            }
         }
 
         /// <summary>
@@ -65,7 +73,15 @@
         public double MaxValue
         {
             get => _max;
-            set => _max = value;
+            set
+            {
+                if (value < _min)
+                {
+                    throw new ArgumentException("максимальное значение меньше минимального");
+                }
+
+                _max = value;
+            }
         }
 
         /// <summary>

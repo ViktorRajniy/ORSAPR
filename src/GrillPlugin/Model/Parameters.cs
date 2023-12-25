@@ -8,46 +8,6 @@
     public class Parameters
     {
         /// <summary>
-        /// Минимальная длина короба мангала.
-        /// </summary>
-        private readonly double _minBoxLength = 500;
-
-        /// <summary>
-        /// Максимальная длина короба мангала.
-        /// </summary>
-        private readonly double _maxBoxLength = 2000;
-
-        /// <summary>
-        /// Минимальная ширина короба мангала.
-        /// </summary>
-        private readonly double _minBoxWidth = 300;
-
-        /// <summary>
-        /// Максимальная ширина короба мангала.
-        /// </summary>
-        private readonly double _maxBoxWidth = 500;
-
-        /// <summary>
-        /// Минимальная толщина стен короба мангала.
-        /// </summary>
-        private readonly double _minBoxThickness = 2;
-
-        /// <summary>
-        /// Максимальная толщина стен короба мангала.
-        /// </summary>
-        private readonly double _maxBoxThickness = 8;
-
-        /// <summary>
-        /// Минимальная высота короба мангала.
-        /// </summary>
-        private readonly double _minBoxHeight = 200;
-
-        /// <summary>
-        /// Максимальная высота короба мангала.
-        /// </summary>
-        private readonly double _maxBoxHeight = 500;
-
-        /// <summary>
         /// Минимальная высота ножек мангала.
         /// </summary>
         private readonly double _minLegHeight = 500;
@@ -139,34 +99,6 @@
         {
             _parametersValue = new Dictionary<ParameterType, Parameter>
             {
-                {
-                ParameterType.BoxLength,
-                new Parameter(
-                    _minBoxLength,
-                    _minBoxLength,
-                    _maxBoxLength)
-                },
-                {
-                ParameterType.BoxWidth,
-                new Parameter(
-                    _minBoxWidth,
-                    _minBoxWidth,
-                    _maxBoxWidth)
-                },
-                {
-                ParameterType.BoxWallThickness,
-                new Parameter(
-                    _minBoxThickness,
-                    _minBoxThickness,
-                    _maxBoxThickness)
-                },
-                {
-                ParameterType.BoxHeight,
-                new Parameter(
-                    _minBoxHeight,
-                    _minBoxHeight,
-                    _maxBoxHeight)
-                },
                 {
                 ParameterType.LegHeight,
                 new Parameter(

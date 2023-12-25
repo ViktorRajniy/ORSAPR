@@ -15,13 +15,7 @@
         /// <summary>
         /// Параметры мангала.
         /// </summary>
-        public Parameters parameters;
-
-        /// <summary>
-        /// Словарь ошибок.
-        /// </summary>
-        private readonly Dictionary<ParameterType, string> _errorParameters =
-            new Dictionary<ParameterType, string>();
+        public Parameters Parameters;
 
         /// <summary>
         /// Цвет текст бокса при ошибке.
@@ -32,6 +26,27 @@
         /// Цвет текст бокса при ошибке.
         /// </summary>
         private readonly Color _defaultColor = Color.White;
+
+        /// <summary>
+        /// Словарь ошибок.
+        /// </summary>
+        private readonly Dictionary<ParameterType, string> _errorParameters =
+            new Dictionary<ParameterType, string>();
+
+        /// <summary>
+        /// Словарь текст боксов.
+        /// </summary>
+        private Dictionary<ParameterType, TextBox> _textBoxs;
+
+        /// <summary>
+        /// Словарь граничных параметров.
+        /// </summary>
+        private Dictionary<ParameterType, Label> _borderLabels;
+
+        /// <summary>
+        /// Словарь граничных параметров.
+        /// </summary>
+        private Dictionary<ParameterType, string> _rusParameters;
 
         /// <summary>
         /// Строка ошибки.
@@ -45,9 +60,85 @@
         {
             InitializeComponent();
             _errorString = string.Empty;
-            parameters = new Parameters();
+            Parameters = new Parameters();
+            InitDictionarys();
+            holeCircleRadioButton.Checked = true;
+            grooveCircleRadioButton.Checked = true;
             UpdateFields();
             UpdateLablesBorders();
+        }
+
+        /// <summary>
+        /// Инициализирует словари для работы с формой приложения.
+        /// </summary>
+        private void InitDictionarys()
+        {
+            InitRusDictionary();
+            InitLabelDictionary();
+            InitTextBoxDictionary();
+        }
+
+        /// <summary>
+        /// Инициализирует словарь Тип параметра - лейбл.
+        /// </summary>
+        private void InitLabelDictionary()
+        {
+            _borderLabels = new Dictionary<ParameterType, Label>()
+            {
+                { ParameterType.BoxLength, lengthBorderLable },
+                { ParameterType.BoxWidth, widthBorderLable },
+                { ParameterType.BoxHeight, heightBorderLable },
+                { ParameterType.BoxWallThickness, thicknessBorderLable },
+                { ParameterType.LegDiameter, legDiameterBorderLable },
+                { ParameterType.LegHeight, legHeightBorderLable },
+                { ParameterType.GrooveDiameter, grooveDiameterBorderLable },
+                { ParameterType.GrooveDistance, grooveDistanceBorderLable },
+                { ParameterType.HoleDistance, holeDistanceBorderLable },
+                { ParameterType.HoleDiameter, holeDiameterBorderLable },
+                { ParameterType.HoleHeight, holeHeightBorderLable },
+            };
+        }
+
+        /// <summary>
+        /// Инициализирует словарь Тип параметра - русское название.
+        /// </summary>
+        private void InitRusDictionary()
+        {
+            _rusParameters = new Dictionary<ParameterType, string>()
+            {
+                { ParameterType.BoxLength, "Длина короба" },
+                { ParameterType.BoxWidth, "Ширина короба" },
+                { ParameterType.BoxHeight, "Высота короба" },
+                { ParameterType.BoxWallThickness, "Толщина стен" },
+                { ParameterType.LegDiameter, "Диаметр ножки" },
+                { ParameterType.LegHeight, "Высота ножки" },
+                { ParameterType.GrooveDiameter, "Диаметр паза для шампура" },
+                { ParameterType.GrooveDistance, "Расстояние между пазами для шампуров" },
+                { ParameterType.HoleDistance, "Расстояние между отверстиями для поддува" },
+                { ParameterType.HoleDiameter, "Диаметр отверстия для поддува" },
+                { ParameterType.HoleHeight, "Высота отверстия для поддува" },
+            };
+        }
+
+        /// <summary>
+        /// Инициализирует словарь Тип параметра - текст бокс.
+        /// </summary>
+        private void InitTextBoxDictionary()
+        {
+            _textBoxs = new Dictionary<ParameterType, TextBox>()
+            {
+                { ParameterType.BoxLength, boxLengthTextBox },
+                { ParameterType.BoxWidth, boxWidthTextBox },
+                { ParameterType.BoxHeight, boxHeightTextBox },
+                { ParameterType.BoxWallThickness, wallThicknessTextBox },
+                { ParameterType.LegDiameter, legDiameterTextBox },
+                { ParameterType.LegHeight, legHeightTextBox },
+                { ParameterType.GrooveDiameter, grooveDiameterTextBox },
+                { ParameterType.GrooveDistance, grooveDistanceTextBox },
+                { ParameterType.HoleDistance, holeDistanceTextBox },
+                { ParameterType.HoleDiameter, holeDiameterTextBox },
+                { ParameterType.HoleHeight, holeHeightTextBox },
+            };
         }
 
         /// <summary>
@@ -74,39 +165,41 @@
                     currentParameter == ParameterType.GrooveDiameter)
                 {
                     _errorParameters[currentParameter] = string.Empty;
-                    parameters.SetValue(currentParameter, value);
-                    parameters.UpdateBorders();
+                    Parameters.SetValue(currentParameter, value);
+                    Parameters.UpdateBorders();
                     CheckDependedTextBoxsCorrect();
-                    CheckDependedTextBoxCorrect(holeDiameterTextBox, ParameterType.HoleDiameter);
+                    CheckDependedTextBoxCorrect(ParameterType.HoleDiameter);
                     UpdateLablesBorders();
                 }
 
                 if (currentParameter == ParameterType.HoleDiameter)
                 {
                     _errorParameters[currentParameter] = string.Empty;
-                    parameters.SetValue(currentParameter, value);
-                    parameters.UpdateBorders();
+                    Parameters.SetValue(currentParameter, value);
+                    Parameters.UpdateBorders();
                     CheckDependedTextBoxsCorrect();
                     UpdateLablesBorders();
                 }
                 else
                 {
                     _errorParameters[currentParameter] = string.Empty;
-                    parameters.SetValue(currentParameter, value);
+                    Parameters.SetValue(currentParameter, value);
                 }
             }
             catch (ArgumentException exc)
             {
                 TextBox currentTextBox = (TextBox)sender;
                 ParameterType currentParameter = CheckTextBoxParameter(currentTextBox);
-                _errorParameters[currentParameter] = exc.Message;
+                _errorParameters[currentParameter] = _rusParameters[currentParameter]
+                    + " " + exc.Message;
                 ErrorTextBox(currentTextBox);
             }
             catch (FormatException exc)
             {
                 TextBox currentTextBox = (TextBox)sender;
                 ParameterType currentParameter = CheckTextBoxParameter(currentTextBox);
-                _errorParameters[currentParameter] = "не может быть пуст";
+                _errorParameters[currentParameter] = _rusParameters[currentParameter]
+                    + " " + "не может быть пуст";
                 ErrorTextBox(currentTextBox);
             }
 
@@ -123,8 +216,7 @@
             {
                 if (_errorParameters[parameterType] != string.Empty)
                 {
-                    _errorString += "Параметр " + parameterType + " " +
-                                    _errorParameters[parameterType].ToString() + "\n";
+                    _errorString += _errorParameters[parameterType].ToString() + "\n";
                 }
             }
 
@@ -145,20 +237,20 @@
         /// </summary>
         private void CheckDependedTextBoxsCorrect()
         {
-            CheckDependedTextBoxCorrect(legDiameterTextBox, ParameterType.LegDiameter);
-            CheckDependedTextBoxCorrect(grooveDistanceTextBox, ParameterType.GrooveDistance);
-            CheckDependedTextBoxCorrect(holeHeightTextBox, ParameterType.HoleHeight);
-            CheckDependedTextBoxCorrect(holeDistanceTextBox, ParameterType.HoleDistance);
+            CheckDependedTextBoxCorrect(ParameterType.LegDiameter);
+            CheckDependedTextBoxCorrect(ParameterType.GrooveDistance);
+            CheckDependedTextBoxCorrect(ParameterType.HoleHeight);
+            CheckDependedTextBoxCorrect(ParameterType.HoleDistance);
         }
 
         /// <summary>
         /// Проверяет текст бокс зависимого параметра.
         /// Сначала обнуляет его и заполняет значением из Модел, чтобы запустить событие.
         /// </summary>
-        private void CheckDependedTextBoxCorrect(TextBox textBox, ParameterType type)
+        private void CheckDependedTextBoxCorrect(ParameterType type)
         {
-            textBox.Text = string.Empty;
-            textBox.Text = parameters.GetParameter(type).Value.ToString();
+            _textBoxs[type].Text = string.Empty;
+            _textBoxs[type].Text = Parameters.GetParameter(type).Value.ToString();
         }
 
         /// <summary>
@@ -166,20 +258,20 @@
         /// </summary>
         private void UpdateLablesBorders()
         {
-            UpdateLableBorders(legDiameterBorderLable, ParameterType.LegDiameter);
-            UpdateLableBorders(grooveDistanceBorderLable, ParameterType.GrooveDistance);
-            UpdateLableBorders(holeDiameterBorderLable, ParameterType.HoleDiameter);
-            UpdateLableBorders(holeHeightBorderLable, ParameterType.HoleHeight);
-            UpdateLableBorders(holeDistanceBorderLable, ParameterType.HoleDistance);
+            UpdateLableBorders(ParameterType.LegDiameter);
+            UpdateLableBorders(ParameterType.GrooveDistance);
+            UpdateLableBorders(ParameterType.HoleDiameter);
+            UpdateLableBorders(ParameterType.HoleHeight);
+            UpdateLableBorders(ParameterType.HoleDistance);
         }
 
         /// <summary>
         /// Обновляет граничные значения лейблов у одного текст бокса.
         /// </summary>
-        private void UpdateLableBorders(Label label, ParameterType type)
+        private void UpdateLableBorders(ParameterType type)
         {
-            label.Text = parameters.GetParameter(type).MinValue.ToString() + " - " +
-                parameters.GetParameter(type).MaxValue.ToString() + ", мм";
+            _borderLabels[type].Text = Parameters.GetParameter(type).MinValue.ToString() + " - " +
+                Parameters.GetParameter(type).MaxValue.ToString() + ", мм";
         }
 
         /// <summary>
@@ -189,68 +281,15 @@
         /// <returns>Тип параметра мангала.</returns>
         private ParameterType CheckTextBoxParameter(TextBox textBox)
         {
-            switch (textBox.Name)
+            foreach (ParameterType type in _textBoxs.Keys)
             {
-                case "boxLengthTextBox":
+                if (_textBoxs[type] == textBox)
                 {
-                    return ParameterType.BoxLength;
-                }
-
-                case "boxWidthTextBox":
-                {
-                    return ParameterType.BoxWidth;
-                }
-
-                case "boxHeightTextBox":
-                {
-                    return ParameterType.BoxHeight;
-                }
-
-                case "wallThicknessTextBox":
-                {
-                    return ParameterType.BoxWallThickness;
-                }
-
-                case "legHeightTextBox":
-                {
-                    return ParameterType.LegHeight;
-                }
-
-                case "legDiameterTextBox":
-                {
-                    return ParameterType.LegDiameter;
-                }
-
-                case "grooveDiameterTextBox":
-                {
-                    return ParameterType.GrooveDiameter;
-                }
-
-                case "grooveDistanceTextBox":
-                {
-                    return ParameterType.GrooveDistance;
-                }
-
-                case "holeDiameterTextBox":
-                {
-                    return ParameterType.HoleDiameter;
-                }
-
-                case "holeHeightTextBox":
-                {
-                    return ParameterType.HoleHeight;
-                }
-
-                case "holeDistanceTextBox":
-                {
-                    return ParameterType.HoleDistance;
-                }
-
-                default:
-                {
-                    return ParameterType.HoleDistance;
+                    return type;
                 }
             }
+
+            return ParameterType.BoxLength;
         }
 
         /// <summary>
@@ -276,38 +315,11 @@
         /// </summary>
         private void UpdateFields()
         {
-            boxLengthTextBox.BackColor = _defaultColor;
-            boxLengthTextBox.Text = parameters.GetParameter(ParameterType.BoxLength).Value.ToString();
-
-            boxHeightTextBox.BackColor = _defaultColor;
-            boxHeightTextBox.Text = parameters.GetParameter(ParameterType.BoxHeight).Value.ToString();
-
-            boxWidthTextBox.BackColor = _defaultColor;
-            boxWidthTextBox.Text = parameters.GetParameter(ParameterType.BoxWidth).Value.ToString();
-
-            wallThicknessTextBox.BackColor = _defaultColor;
-            wallThicknessTextBox.Text = parameters.GetParameter(ParameterType.BoxWallThickness).Value.ToString();
-
-            legDiameterTextBox.BackColor = _defaultColor;
-            legDiameterTextBox.Text = parameters.GetParameter(ParameterType.LegDiameter).Value.ToString();
-
-            legHeightTextBox.BackColor = _defaultColor;
-            legHeightTextBox.Text = parameters.GetParameter(ParameterType.LegHeight).Value.ToString();
-
-            grooveDiameterTextBox.BackColor = _defaultColor;
-            grooveDiameterTextBox.Text = parameters.GetParameter(ParameterType.GrooveDiameter).Value.ToString();
-
-            grooveDistanceTextBox.BackColor = _defaultColor;
-            grooveDistanceTextBox.Text = parameters.GetParameter(ParameterType.GrooveDistance).Value.ToString();
-
-            holeDiameterTextBox.BackColor = _defaultColor;
-            holeDiameterTextBox.Text = parameters.GetParameter(ParameterType.HoleDiameter).Value.ToString();
-
-            holeHeightTextBox.BackColor = _defaultColor;
-            holeHeightTextBox.Text = parameters.GetParameter(ParameterType.HoleHeight).Value.ToString();
-
-            holeDistanceTextBox.BackColor = _defaultColor;
-            holeDistanceTextBox.Text = parameters.GetParameter(ParameterType.HoleDistance).Value.ToString();
+            foreach (ParameterType type in _textBoxs.Keys)
+            {
+                _textBoxs[type].BackColor = _defaultColor;
+                _textBoxs[type].Text = Parameters.GetParameter(type).Value.ToString();
+            }
 
             ErrorLable.BackColor = _defaultColor;
             ErrorLable.Text = "";
@@ -339,11 +351,59 @@
             }
             else
             {
-                parameters.InitHoleGrooveCount();
-                AutoCadBuilder builder = new AutoCadBuilder(parameters);
+                Parameters.InitHoleGrooveCount();
+                AutoCadBuilder builder = new AutoCadBuilder(Parameters);
                 builder.BuildGrill();
                 Close();
             }
+        }
+
+        /// <summary>
+        /// Событие, случающееся при выборе круглых отверстий для поддува.
+        /// </summary>
+        /// <param name="sender">Отправитель радио баттон.</param>
+        /// <param name="e">Событие.</param>
+        private void HoleCircleRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            holeDiameterLable.Visible = true;
+            holeHeightLable.Visible = true;
+            holeDistanceLable.Visible = true;
+
+            holeDiameterTextBox.Visible = true;
+            holeHeightTextBox.Visible = true;
+            holeDistanceTextBox.Visible = true;
+
+            holeDiameterBorderLable.Visible = true;
+            holeHeightBorderLable.Visible = true;
+            holeDistanceBorderLable.Visible = true;
+
+            solidHoleHieghtLabel.Visible = false;
+            solidHoleHeightTextBox.Visible = false;
+            solidHoleHeightBorderLabel.Visible = false;
+        }
+
+        /// <summary>
+        /// Событие, случающееся при выборе сплошного отверстия для поддува.
+        /// </summary>
+        /// <param name="sender">Отправитель радио баттон.</param>
+        /// <param name="e">Событие.</param>
+        private void HoleSolidRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            holeDiameterLable.Visible = false;
+            holeHeightLable.Visible = false;
+            holeDistanceLable.Visible = false;
+
+            holeDiameterTextBox.Visible = false;
+            holeHeightTextBox.Visible = false;
+            holeDistanceTextBox.Visible = false;
+
+            holeDiameterBorderLable.Visible = false;
+            holeHeightBorderLable.Visible = false;
+            holeDistanceBorderLable.Visible = false;
+
+            solidHoleHieghtLabel.Visible = true;
+            solidHoleHeightTextBox.Visible = true;
+            solidHoleHeightBorderLabel.Visible = true;
         }
     }
 }

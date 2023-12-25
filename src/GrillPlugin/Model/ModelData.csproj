@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoxParameters.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ParameterType.cs" />

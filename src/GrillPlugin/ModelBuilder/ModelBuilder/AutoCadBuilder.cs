@@ -11,6 +11,9 @@
     /// </summary>
     public class AutoCadBuilder
     {
+        /// <summary>
+        /// Параметры мангала.
+        /// </summary>
         private readonly Parameters _parameters;
 
         /// <summary>
@@ -115,15 +118,21 @@
             double boxThickness,
             double height)
         {
-            Region boxBase = SketchBuilder.CreateRectangle(boxWidth, boxLength, new Point3d(0, 0, height));
+            Region boxBase = SketchBuilder.CreateRectangle(
+                boxWidth, 
+                boxLength, 
+                new Point3d(0, 0, height));
 
             Solid3d box = new Solid3d();
 
-            box.Extrude(boxBase, -boxHeight, 0);
-
-            Region boxCutter = SketchBuilder.CreateRectangle(boxWidth - (2 * boxThickness), boxLength - (2 * boxThickness), new Point3d(0, 0, height + boxThickness));
+            Region boxCutter = SketchBuilder.CreateRectangle(
+                boxWidth - (2 * boxThickness), 
+                boxLength - (2 * boxThickness), 
+                new Point3d(0, 0, height + boxThickness));
 
             Solid3d cutter = new Solid3d();
+
+            box.Extrude(boxBase, -boxHeight, 0);
 
             cutter.Extrude(boxCutter, -boxHeight, 0);
 
@@ -196,7 +205,12 @@
         /// <param name="deep">Глубина выреза.</param>
         /// <param name="height">Высота центра отверстия.</param>
         /// <returns></returns>
-        private Solid3d BuildCircleArray(Point3d startPoint, double diameter, double distance, int count, double deep)
+        private Solid3d BuildCircleArray(
+            Point3d startPoint, 
+            double diameter, 
+            double distance, 
+            int count, 
+            double deep)
         {
             Solid3d circleArray = new Solid3d();
 
@@ -223,9 +237,14 @@
                             startPoint.Y,
                             startPoint.Z);
 
-                        cylinder = BuildHorisontalCylinder(nextPoint, diameter, deep);
+                        cylinder = BuildHorisontalCylinder(
+                            nextPoint, 
+                            diameter, 
+                            deep);
 
-                        circleArray.BooleanOperation(BooleanOperationType.BoolUnite, cylinder);
+                        circleArray.BooleanOperation(
+                            BooleanOperationType.BoolUnite, 
+                            cylinder);
                     }
 
                     side *= -1;
@@ -249,9 +268,14 @@
                             start.Y,
                             start.Z);
 
-                        cylinder = BuildHorisontalCylinder(nextPoint, diameter, deep);
+                        cylinder = BuildHorisontalCylinder(
+                            nextPoint, 
+                            diameter, 
+                            deep);
 
-                        circleArray.BooleanOperation(BooleanOperationType.BoolUnite, cylinder);
+                        circleArray.BooleanOperation(
+                            BooleanOperationType.BoolUnite, 
+                            cylinder);
                     }
 
                     side *= -1;
@@ -268,11 +292,17 @@
         /// <param name="diameter">Диаметр цилиндра.</param>
         /// <param name="deep">Глубина цилиндра.</param>
         /// <returns></returns>
-        private Solid3d BuildHorisontalCylinder(Point3d center, double diameter, double deep)
+        private Solid3d BuildHorisontalCylinder(
+            Point3d center, 
+            double diameter,
+            double deep)
         {
             Solid3d cylinder = new Solid3d();
 
-            Region circle = SketchBuilder.CreateCircle(center, Vector3d.YAxis, diameter);
+            Region circle = SketchBuilder.CreateCircle(
+                center, 
+                Vector3d.YAxis, 
+                diameter);
 
             cylinder.Extrude(circle, -deep, 0);
 
