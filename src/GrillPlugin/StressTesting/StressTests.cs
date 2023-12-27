@@ -26,7 +26,7 @@ public class StressTests
 
         StreamWriter writer = new StreamWriter($"MaxLog.txt", false);
 
-        AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters);
+        AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters, true, true);
 
         Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
         var count = 0;
