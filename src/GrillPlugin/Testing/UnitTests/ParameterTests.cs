@@ -9,7 +9,7 @@
             // Setup:
             double expected = 10;
 
-            Parameter actual = new Parameter(5, 0, 15);
+            Parameter actual = new Parameter(5, 1, 15);
 
             // Testing:
             actual.Value = expected;
@@ -24,7 +24,7 @@
             // Setup:
             double expected = 5;
 
-            Parameter actual = new Parameter(5, 0, 15);
+            Parameter actual = new Parameter(5, 1, 15);
 
             // Testing:
 
@@ -38,7 +38,7 @@
             // Setup:
             double expected = 10;
 
-            Parameter actual = new Parameter(12, 0, 15);
+            Parameter actual = new Parameter(12, 1, 15);
 
             // Testing:
             actual.MinValue = expected;
@@ -47,13 +47,43 @@
             Assert.AreEqual(expected, actual.MinValue);
         }
 
+        [Test(Description = "Негативный тест сеттера MinValue")]
+        public void ParameterMinValue_SetLessNullValue_ValueIsSetted()
+        {
+            // Setup:
+
+            // Testing:
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    Parameter setup = new Parameter(1, -5, 5);
+                });
+        }
+
+        [Test(Description = "Негативный тест сеттера MinValue")]
+        public void ParameterMinValue_SetNullValue_ValueIsSetted()
+        {
+            // Setup:
+
+            // Testing:
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    Parameter setup = new Parameter(1, 0, 5);
+                });
+        }
+
         [Test(Description = "Позитивный тест геттера MinValue")]
         public void ParameterMinValue_GetCorrectValue_ValueIsGetted()
         {
             // Setup:
-            double expected = 0;
+            double expected = 1;
 
-            Parameter actual = new Parameter(12, 0, 15);
+            Parameter actual = new Parameter(12, 1, 15);
 
             // Testing:
 
@@ -67,7 +97,7 @@
             // Setup:
             double expected = 10;
 
-            Parameter actual = new Parameter(7, 0, 15);
+            Parameter actual = new Parameter(7, 1, 15);
 
             // Testing:
             actual.MaxValue = expected;
@@ -76,13 +106,28 @@
             Assert.AreEqual(expected, actual.MaxValue);
         }
 
+        [Test(Description = "Негативный тест сеттера MinValue")]
+        public void ParameterMaxValue_SetIncorrectValue_ValueIsSetted()
+        {
+            // Setup:
+
+            // Testing:
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    Parameter setup = new Parameter(10, 10, 5);
+                });
+        }
+
         [Test(Description = "Позитивный тест геттера MaxValue")]
         public void ParameterMaxValue_GetCorrectValue_ValueIsGetted()
         {
             // Setup:
             double expected = 15;
 
-            Parameter actual = new Parameter(12, 0, 15);
+            Parameter actual = new Parameter(12, 1, 15);
 
             // Testing:
 
@@ -106,9 +151,9 @@
             Assert.Multiple(
                 () =>
                 {
-                    Assert.AreEqual(expectedValue, actual.Value);
-                    Assert.AreEqual(expectedMinValue, actual.MinValue);
-                    Assert.AreEqual(expectedMaxValue, actual.MaxValue);
+                    Assert.That(actual.Value, Is.EqualTo(expectedValue));
+                    Assert.That(actual.MinValue, Is.EqualTo(expectedMinValue));
+                    Assert.That(actual.MaxValue, Is.EqualTo(expectedMaxValue));
                 });
         }
 
@@ -123,7 +168,7 @@
             Assert.Throws<ArgumentException>(
                 () =>
                 {
-                    Parameter setup = new Parameter(10, 0, 5);
+                    Parameter setup = new Parameter(10, 1, 5);
                 });
         }
 
@@ -153,7 +198,7 @@
             Assert.DoesNotThrow(
                 () =>
                 {
-                    Parameter setup = new Parameter(5, 0, 10);
+                    Parameter setup = new Parameter(5, 1, 10);
                 });
         }
     }
