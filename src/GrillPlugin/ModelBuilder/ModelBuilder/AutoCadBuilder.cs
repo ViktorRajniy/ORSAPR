@@ -17,19 +17,31 @@
         private readonly Parameters _parameters;
 
         /// <summary>
+        /// Флаг, означающий, выбран ли метод построения круглых отверстий для поддува.
+        /// </summary>
+        private readonly bool _circleHoles = true;
+
+        /// <summary>
+        /// Флаг, означающий, выбран ли метод построения круглых пазов для шампуров.
+        /// </summary>
+        private readonly bool _circleGrooves = true;
+
+        /// <summary>
         /// Конструктор класса с вложенными параметрами.
         /// </summary>
         /// <param name="parameters"> словарь с параметрами модели. </param>
-        public AutoCadBuilder(Parameters parameters)
+        public AutoCadBuilder(Parameters parameters, bool circleHoles, bool circleGrooves)
         {
             _parameters = parameters;
+            _circleHoles = circleHoles;
+            _circleGrooves = circleGrooves;
         }
 
         /// <summary>
         /// Основной метод. Строит весь мангал.
         /// </summary>
         /// <returns></returns>
-        public bool BuildGrill()
+        public void BuildGrill()
         {
             var document = Application.DocumentManager.MdiActiveDocument;
             var database = document.Database;
@@ -45,11 +57,9 @@
                         GetObject(SymbolUtilityServices.GetBlockModelSpaceId(database),
                         Autodesk.AutoCAD.DatabaseServices.OpenMode.ForWrite, false, true);
 
-                    Solid3d legs = BuildGrillLegs(
-                        _parameters.GetParameter(ParameterType.LegHeight).Value,
-                        _parameters.GetParameter(ParameterType.LegDiameter).Value,
-                        _parameters.GetParameter(ParameterType.BoxLength).Value,
-                        _parameters.GetParameter(ParameterType.BoxWidth).Value);
+                    Point3d startPoint;
+
+                    Solid3d grill = new Solid3d();
 
                     Solid3d grillBox = BuildGrillBox(
                         _parameters.GetParameter(ParameterType.BoxLength).Value,
@@ -58,39 +68,92 @@
                         _parameters.GetParameter(ParameterType.BoxWallThickness).Value,
                         _parameters.GetParameter(ParameterType.LegHeight).Value);
 
-                    Point3d startPoint = new Point3d(
-                        0,
-                        _parameters.GetParameter(ParameterType.BoxWidth).Value / 2,
-                        _parameters.GetParameter(ParameterType.HoleHeight).Value +
-                        _parameters.GetParameter(ParameterType.LegHeight).Value
-                        );
-
-                    Solid3d holes = BuildCircleArray(
-                        startPoint,
-                        _parameters.GetParameter(ParameterType.HoleDiameter).Value,
-                        _parameters.GetParameter(ParameterType.HoleDistance).Value,
-                        _parameters.GetHoleCount(),
-                        _parameters.GetParameter(ParameterType.BoxWidth).Value);
-
-                    startPoint = new Point3d(
-                        0,
-                        _parameters.GetParameter(ParameterType.BoxWidth).Value / 2,
-                        _parameters.GetParameter(ParameterType.BoxHeight).Value +
-                        _parameters.GetParameter(ParameterType.LegHeight).Value
-                        );
-
-                    Solid3d slots = BuildCircleArray(
-                        startPoint,
-                        _parameters.GetParameter(ParameterType.GrooveDiameter).Value,
-                        _parameters.GetParameter(ParameterType.GrooveDistance).Value,
-                        _parameters.GetGrooveCount(),
-                        _parameters.GetParameter(ParameterType.BoxWidth).Value);
-
-                    Solid3d grill = new Solid3d();
-                    grill.BooleanOperation(BooleanOperationType.BoolUnite, legs);
                     grill.BooleanOperation(BooleanOperationType.BoolUnite, grillBox);
-                    grill.BooleanOperation(BooleanOperationType.BoolSubtract, holes);
-                    grill.BooleanOperation(BooleanOperationType.BoolSubtract, slots);
+
+                    Solid3d legs = BuildGrillLegs(
+                        _parameters.GetParameter(ParameterType.LegHeight).Value,
+                        _parameters.GetParameter(ParameterType.LegDiameter).Value,
+                        _parameters.GetParameter(ParameterType.BoxLength).Value,
+                        _parameters.GetParameter(ParameterType.BoxWidth).Value);
+
+                    grill.BooleanOperation(BooleanOperationType.BoolUnite, legs);
+
+                    if (_circleHoles)
+                    {
+                        startPoint = new Point3d(
+                            0,
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value / 2,
+                            _parameters.GetParameter(ParameterType.CircleHoleHeight).Value +
+                            _parameters.GetParameter(ParameterType.LegHeight).Value
+                        );
+
+                        Solid3d holes = BuildCircleArray(
+                            startPoint,
+                            _parameters.GetParameter(ParameterType.CircleHoleDiameter).Value,
+                            _parameters.GetParameter(ParameterType.CircleHoleDistance).Value,
+                            _parameters.GetCircleHoleCount(),
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value);
+
+                        grill.BooleanOperation(BooleanOperationType.BoolSubtract, holes);
+                    }
+                    else
+                    {
+                        startPoint = new Point3d(
+                            0,
+                            0,
+                            _parameters.GetParameter(ParameterType.LegHeight).Value +
+                            _parameters.GetParameter(ParameterType.BoxWallThickness).Value
+                        );
+
+                        Solid3d hole = BuildHorisontalParallelepiped(
+                            startPoint,
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value,
+                            _parameters.GetParameter(ParameterType.BoxLength).Value -
+                            (_parameters.GetParameter(ParameterType.BoxWallThickness).Value * 2),
+                            _parameters.GetParameter(ParameterType.RectangleHoleHeight).Value
+                            );
+
+                        grill.BooleanOperation(BooleanOperationType.BoolSubtract, hole);
+                    }
+
+                    if (_circleGrooves)
+                    {
+                        startPoint = new Point3d(
+                            0,
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value / 2,
+                            _parameters.GetParameter(ParameterType.BoxHeight).Value +
+                            _parameters.GetParameter(ParameterType.LegHeight).Value
+                        );
+
+                        Solid3d slots = BuildCircleArray(
+                            startPoint,
+                            _parameters.GetParameter(ParameterType.CircleGrooveDiameter).Value,
+                            _parameters.GetParameter(ParameterType.CircleGrooveDistance).Value,
+                            _parameters.GetCircleGroovesCount(),
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value);
+
+                        grill.BooleanOperation(BooleanOperationType.BoolSubtract, slots);
+                    }
+                    else
+                    {
+                        startPoint = new Point3d(
+                            0,
+                            0,
+                            _parameters.GetParameter(ParameterType.BoxHeight).Value +
+                            _parameters.GetParameter(ParameterType.LegHeight).Value -
+                            _parameters.GetParameter(ParameterType.RectangleGrooveHeight).Value
+                        );
+
+                        Solid3d slots = BuildParallelepipedArray(
+                            startPoint,
+                            _parameters.GetParameter(ParameterType.BoxWidth).Value,
+                            _parameters.GetParameter(ParameterType.RectangleGrooveWidth).Value,
+                            _parameters.GetParameter(ParameterType.RectangleGrooveHeight).Value,
+                            _parameters.GetParameter(ParameterType.RectangleGrooveDistance).Value,
+                            _parameters.GetRectangleGroovesCount());
+
+                        grill.BooleanOperation(BooleanOperationType.BoolSubtract, slots);
+                    }
 
                     MdlSpc.AppendEntity(grill);
                     trans.AddNewlyCreatedDBObject(grill, true);
@@ -98,8 +161,6 @@
                     trans.Commit();
                 }
             }
-
-            return true;
         }
 
         /// <summary>
@@ -119,15 +180,15 @@
             double height)
         {
             Region boxBase = SketchBuilder.CreateRectangle(
-                boxWidth, 
-                boxLength, 
+                boxWidth,
+                boxLength,
                 new Point3d(0, 0, height));
 
             Solid3d box = new Solid3d();
 
             Region boxCutter = SketchBuilder.CreateRectangle(
-                boxWidth - (2 * boxThickness), 
-                boxLength - (2 * boxThickness), 
+                boxWidth - (2 * boxThickness),
+                boxLength - (2 * boxThickness),
                 new Point3d(0, 0, height + boxThickness));
 
             Solid3d cutter = new Solid3d();
@@ -206,10 +267,10 @@
         /// <param name="height">Высота центра отверстия.</param>
         /// <returns></returns>
         private Solid3d BuildCircleArray(
-            Point3d startPoint, 
-            double diameter, 
-            double distance, 
-            int count, 
+            Point3d startPoint,
+            double diameter,
+            double distance,
+            int count,
             double deep)
         {
             Solid3d circleArray = new Solid3d();
@@ -238,12 +299,12 @@
                             startPoint.Z);
 
                         cylinder = BuildHorisontalCylinder(
-                            nextPoint, 
-                            diameter, 
+                            nextPoint,
+                            diameter,
                             deep);
 
                         circleArray.BooleanOperation(
-                            BooleanOperationType.BoolUnite, 
+                            BooleanOperationType.BoolUnite,
                             cylinder);
                     }
 
@@ -269,12 +330,12 @@
                             start.Z);
 
                         cylinder = BuildHorisontalCylinder(
-                            nextPoint, 
-                            diameter, 
+                            nextPoint,
+                            diameter,
                             deep);
 
                         circleArray.BooleanOperation(
-                            BooleanOperationType.BoolUnite, 
+                            BooleanOperationType.BoolUnite,
                             cylinder);
                     }
 
@@ -293,20 +354,141 @@
         /// <param name="deep">Глубина цилиндра.</param>
         /// <returns></returns>
         private Solid3d BuildHorisontalCylinder(
-            Point3d center, 
+            Point3d center,
             double diameter,
             double deep)
         {
             Solid3d cylinder = new Solid3d();
 
             Region circle = SketchBuilder.CreateCircle(
-                center, 
-                Vector3d.YAxis, 
+                center,
+                Vector3d.YAxis,
                 diameter);
 
             cylinder.Extrude(circle, -deep, 0);
 
             return cylinder;
+        }
+
+        /// <summary>
+        /// Метод создаёт массив горизонтально направленных параллелепипедов.
+        /// </summary>
+        /// <param name="diameter">Диаметр отверстия.</param>
+        /// <param name="distance">Расстояние между отверстиями.</param>
+        /// <param name="count">Количество отверстий.</param>
+        /// <param name="deep">Глубина выреза.</param>
+        /// <param name="height">Высота центра отверстия.</param>
+        /// <returns></returns>
+        private Solid3d BuildParallelepipedArray(
+            Point3d startPoint,
+            double width,
+            double length,
+            double height,
+            double distance,
+            int count)
+        {
+            Solid3d parallelepipedArray = new Solid3d();
+
+            int parity = count % 2;
+
+            Point3d nextPoint = new Point3d();
+
+            Solid3d parallelepiped = new Solid3d();
+
+            double side = 1;
+
+            if (parity != 0)
+            {
+                parallelepiped = BuildHorisontalParallelepiped(
+                    startPoint,
+                    width,
+                    length,
+                    height);
+
+                parallelepipedArray.BooleanOperation(BooleanOperationType.BoolUnite, parallelepiped);
+
+                for (int j = 0; j < 2; j++)
+                {
+                    for (int i = 0; i < (count / 2) + 1; i++)
+                    {
+                        nextPoint = new Point3d(
+                            startPoint.X + (side * (i * (length + distance))),
+                            startPoint.Y,
+                            startPoint.Z);
+
+                        parallelepiped = BuildHorisontalParallelepiped(
+                            nextPoint,
+                            width,
+                            length,
+                            height);
+
+                        parallelepipedArray.BooleanOperation(
+                            BooleanOperationType.BoolUnite,
+                            parallelepiped);
+                    }
+
+                    side *= -1;
+                }
+            }
+            else
+            {
+                Point3d start = new Point3d();
+
+                for (int j = 0; j < 2; j++)
+                {
+                    start = new Point3d(
+                    startPoint.X + (side * ((distance / 2) + (length / 2))),
+                    startPoint.Y,
+                    startPoint.Z);
+
+                    for (int i = 0; i < count / 2; i++)
+                    {
+                        nextPoint = new Point3d(
+                            start.X + (side * (i * (length + distance))),
+                            start.Y,
+                            start.Z);
+
+                        parallelepiped = BuildHorisontalParallelepiped(
+                            nextPoint,
+                            width,
+                            length,
+                            height);
+
+                        parallelepipedArray.BooleanOperation(
+                            BooleanOperationType.BoolUnite,
+                            parallelepiped);
+                    }
+
+                    side *= -1;
+                }
+            }
+
+            return parallelepipedArray;
+        }
+
+        /// <summary>
+        /// Метод строит горизонтальный параллелепипед по заданным параметрам.
+        /// </summary>
+        /// <param name="center">Центр окружности начала.</param>
+        /// <param name="diameter">Диаметр цилиндра.</param>
+        /// <param name="deep">Глубина цилиндра.</param>
+        /// <returns></returns>
+        private Solid3d BuildHorisontalParallelepiped(
+            Point3d center,
+            double lenght,
+            double width,
+            double height)
+        {
+            Solid3d parallelepiped = new Solid3d();
+
+            Region rectangle = SketchBuilder.CreateRectangle(
+                lenght,
+                width,
+                center);
+
+            parallelepiped.Extrude(rectangle, -height, 0);
+
+            return parallelepiped;
         }
     }
 }
