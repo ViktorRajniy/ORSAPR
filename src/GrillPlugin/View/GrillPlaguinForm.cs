@@ -54,6 +54,16 @@
         private string _errorString;
 
         /// <summary>
+        /// Флаг, означающий, выбран ли метод построения круглых отверстий для поддува.
+        /// </summary>
+        private bool _isCircleHolesSelected = true;
+
+        /// <summary>
+        /// Флаг, означающий, выбран ли метод построения круглых пазов для шампуров.
+        /// </summary>
+        private bool _isCircleGrooveSelected = true;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="GrillPluginForm"/> class.
         /// </summary>
         public GrillPluginForm()
@@ -62,8 +72,8 @@
             _errorString = string.Empty;
             Parameters = new Parameters();
             InitDictionarys();
-            holeCircleRadioButton.Checked = true;
-            grooveCircleRadioButton.Checked = true;
+            holeCircleRadioButton.Checked = _isCircleHolesSelected;
+            grooveCircleRadioButton.Checked = _isCircleGrooveSelected;
             UpdateFields();
             UpdateLablesBorders();
         }
@@ -91,11 +101,15 @@
                 { ParameterType.BoxWallThickness, thicknessBorderLable },
                 { ParameterType.LegDiameter, legDiameterBorderLable },
                 { ParameterType.LegHeight, legHeightBorderLable },
-                { ParameterType.GrooveDiameter, grooveDiameterBorderLable },
-                { ParameterType.GrooveDistance, grooveDistanceBorderLable },
-                { ParameterType.HoleDistance, holeDistanceBorderLable },
-                { ParameterType.HoleDiameter, holeDiameterBorderLable },
-                { ParameterType.HoleHeight, holeHeightBorderLable },
+                { ParameterType.CircleHoleDistance, holeDistanceBorderLable },
+                { ParameterType.CircleHoleDiameter, holeDiameterBorderLable },
+                { ParameterType.CircleHoleHeight, holeHeightBorderLable },
+                { ParameterType.RectangleHoleHeight, solidHoleHeightBorderLabel },
+                { ParameterType.CircleGrooveDiameter, grooveDiameterBorderLable },
+                { ParameterType.CircleGrooveDistance, grooveDistanceBorderLable },
+                { ParameterType.RectangleGrooveHeight, rectangleGrooveHeightBorderLabel },
+                { ParameterType.RectangleGrooveDistance, rectangleGrooveDistanceBorderLabel },
+                { ParameterType.RectangleGrooveWidth, rectangleGrooveWidthBorderLabel },
             };
         }
 
@@ -112,11 +126,15 @@
                 { ParameterType.BoxWallThickness, "Толщина стен" },
                 { ParameterType.LegDiameter, "Диаметр ножки" },
                 { ParameterType.LegHeight, "Высота ножки" },
-                { ParameterType.GrooveDiameter, "Диаметр паза для шампура" },
-                { ParameterType.GrooveDistance, "Расстояние между пазами для шампуров" },
-                { ParameterType.HoleDistance, "Расстояние между отверстиями для поддува" },
-                { ParameterType.HoleDiameter, "Диаметр отверстия для поддува" },
-                { ParameterType.HoleHeight, "Высота отверстия для поддува" },
+                { ParameterType.CircleGrooveDiameter, "Диаметр паза для шампура" },
+                { ParameterType.CircleGrooveDistance, "Расстояние между пазами для шампуров" },
+                { ParameterType.CircleHoleDistance, "Расстояние между отверстиями для поддува" },
+                { ParameterType.CircleHoleDiameter, "Диаметр отверстия для поддува" },
+                { ParameterType.CircleHoleHeight, "Высота отверстия для поддува" },
+                { ParameterType.RectangleHoleHeight, "Высота выреза для поддува" },
+                { ParameterType.RectangleGrooveHeight, "Глубина прямоугольных пазов" },
+                { ParameterType.RectangleGrooveDistance, "Расстояние между прямоугольными пазами" },
+                { ParameterType.RectangleGrooveWidth, "Ширина прямоугольных пазов" },
             };
         }
 
@@ -133,11 +151,15 @@
                 { ParameterType.BoxWallThickness, wallThicknessTextBox },
                 { ParameterType.LegDiameter, legDiameterTextBox },
                 { ParameterType.LegHeight, legHeightTextBox },
-                { ParameterType.GrooveDiameter, grooveDiameterTextBox },
-                { ParameterType.GrooveDistance, grooveDistanceTextBox },
-                { ParameterType.HoleDistance, holeDistanceTextBox },
-                { ParameterType.HoleDiameter, holeDiameterTextBox },
-                { ParameterType.HoleHeight, holeHeightTextBox },
+                { ParameterType.CircleHoleDistance, holeDistanceTextBox },
+                { ParameterType.CircleHoleDiameter, holeDiameterTextBox },
+                { ParameterType.CircleHoleHeight, holeHeightTextBox },
+                { ParameterType.RectangleHoleHeight, solidHoleHeightTextBox },
+                { ParameterType.CircleGrooveDiameter, circleGrooveDiameterTextBox },
+                { ParameterType.CircleGrooveDistance, circleGrooveDistanceTextBox },
+                { ParameterType.RectangleGrooveHeight, rectangleGrooveHeightTextBox },
+                { ParameterType.RectangleGrooveDistance, rectangleGrooveDistanceTextBox},
+                { ParameterType.RectangleGrooveWidth, rectangleGrooveWidthTextBox },
             };
         }
 
@@ -151,47 +173,140 @@
             try
             {
                 TextBox currentTextBox = (TextBox)sender;
-
                 DefaultTextBox(currentTextBox);
 
                 ParameterType currentParameter = CheckTextBoxParameter(currentTextBox);
-
                 double value = Convert.ToDouble(currentTextBox.Text);
 
-                if (currentParameter == ParameterType.BoxLength ||
-                    currentParameter == ParameterType.BoxWidth ||
-                    currentParameter == ParameterType.BoxWallThickness ||
-                    currentParameter == ParameterType.BoxHeight ||
-                    currentParameter == ParameterType.GrooveDiameter)
-                {
-                    _errorParameters[currentParameter] = string.Empty;
-                    Parameters.SetValue(currentParameter, value);
-                    Parameters.UpdateBorders();
-                    CheckDependedTextBoxsCorrect();
-                    CheckDependedTextBoxCorrect(ParameterType.HoleDiameter);
-                    UpdateLablesBorders();
-                }
+                // Обновление строки ошибки текущего параметра.
+                _errorParameters[currentParameter] = string.Empty;
 
-                if (currentParameter == ParameterType.HoleDiameter)
+                // Присваивание нового значения не зависимому параметру.
+                Parameters.SetValue(currentParameter, value);
+
+                switch (currentParameter)
                 {
-                    _errorParameters[currentParameter] = string.Empty;
-                    Parameters.SetValue(currentParameter, value);
-                    Parameters.UpdateBorders();
-                    CheckDependedTextBoxsCorrect();
-                    UpdateLablesBorders();
-                }
-                else
-                {
-                    _errorParameters[currentParameter] = string.Empty;
-                    Parameters.SetValue(currentParameter, value);
+                    case ParameterType.BoxLength:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleDistance);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleHeight);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleGrooveDistance);
+                        CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveDistance);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.BoxWidth:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.LegDiameter);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.BoxHeight:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleHeight);
+                        CheckDependedTextBoxCorrect(ParameterType.RectangleHoleHeight);
+                        CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveHeight);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.BoxWallThickness:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.LegDiameter);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleDistance);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleHeight);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleGrooveDistance);
+                        CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveDistance);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.CircleHoleDiameter:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleDistance);
+                        CheckDependedTextBoxCorrect(ParameterType.CircleHoleHeight);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.CircleGrooveDiameter:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.CircleGrooveDistance);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    case ParameterType.RectangleGrooveWidth:
+                    {
+                        // Обновление всех граничных значений.
+                        Parameters.UpdateBorders();
+
+                        // Переприсваивание значений зависимым параметрам.
+                        CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveDistance);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
+
+                    default:
+                    {
+                        // Обновление строки ошибки текущего параметра.
+                        _errorParameters[currentParameter] = string.Empty;
+
+                        // Присваивание нового значения не зависимому параметру.
+                        Parameters.SetValue(currentParameter, value);
+
+                        // Обновление граничных значений на форме.
+                        UpdateLablesBorders();
+                        break;
+                    }
                 }
             }
-            catch (ArgumentException exc)
+            catch (ArgumentException argumentException)
             {
                 TextBox currentTextBox = (TextBox)sender;
                 ParameterType currentParameter = CheckTextBoxParameter(currentTextBox);
                 _errorParameters[currentParameter] = _rusParameters[currentParameter]
-                    + " " + exc.Message;
+                    + " " + argumentException.Message;
                 ErrorTextBox(currentTextBox);
             }
             catch (FormatException exc)
@@ -233,24 +348,14 @@
         }
 
         /// <summary>
-        /// Проверяет все текст боксы зависимых параметров.
-        /// </summary>
-        private void CheckDependedTextBoxsCorrect()
-        {
-            CheckDependedTextBoxCorrect(ParameterType.LegDiameter);
-            CheckDependedTextBoxCorrect(ParameterType.GrooveDistance);
-            CheckDependedTextBoxCorrect(ParameterType.HoleHeight);
-            CheckDependedTextBoxCorrect(ParameterType.HoleDistance);
-        }
-
-        /// <summary>
         /// Проверяет текст бокс зависимого параметра.
         /// Сначала обнуляет его и заполняет значением из Модел, чтобы запустить событие.
         /// </summary>
         private void CheckDependedTextBoxCorrect(ParameterType type)
         {
+            string temp = _textBoxs[type].Text;
             _textBoxs[type].Text = string.Empty;
-            _textBoxs[type].Text = Parameters.GetParameter(type).Value.ToString();
+            _textBoxs[type].Text = temp;
         }
 
         /// <summary>
@@ -258,11 +363,10 @@
         /// </summary>
         private void UpdateLablesBorders()
         {
-            UpdateLableBorders(ParameterType.LegDiameter);
-            UpdateLableBorders(ParameterType.GrooveDistance);
-            UpdateLableBorders(ParameterType.HoleDiameter);
-            UpdateLableBorders(ParameterType.HoleHeight);
-            UpdateLableBorders(ParameterType.HoleDistance);
+            foreach (ParameterType type in _borderLabels.Keys)
+            {
+                UpdateLableBorders(type);
+            }
         }
 
         /// <summary>
@@ -270,8 +374,9 @@
         /// </summary>
         private void UpdateLableBorders(ParameterType type)
         {
-            _borderLabels[type].Text = Parameters.GetParameter(type).MinValue.ToString() + " - " +
-                Parameters.GetParameter(type).MaxValue.ToString() + ", мм";
+            _borderLabels[type].Text =
+                Parameters.GetParameter(type).MinValue + " - " +
+                Parameters.GetParameter(type).MaxValue + ", мм";
         }
 
         /// <summary>
@@ -352,10 +457,82 @@
             else
             {
                 Parameters.InitHoleGrooveCount();
-                AutoCadBuilder builder = new AutoCadBuilder(Parameters);
+                AutoCadBuilder builder = new AutoCadBuilder(
+                    Parameters,
+                    _isCircleHolesSelected,
+                    _isCircleGrooveSelected);
                 builder.BuildGrill();
                 Close();
             }
+        }
+
+        /// <summary>
+        /// Метод, отвечающий за видимость текст бокса и лейблов круглых
+        /// отверстий для поддува на форме.
+        /// </summary>
+        /// <param name="visible"></param>
+        private void CircleHoleVisible(bool visible)
+        {
+            holeDiameterLable.Visible = visible;
+            holeHeightLable.Visible = visible;
+            holeDistanceLable.Visible = visible;
+
+            holeDiameterTextBox.Visible = visible;
+            holeHeightTextBox.Visible = visible;
+            holeDistanceTextBox.Visible = visible;
+
+            holeDiameterBorderLable.Visible = visible;
+            holeHeightBorderLable.Visible = visible;
+            holeDistanceBorderLable.Visible = visible;
+        }
+
+        /// <summary>
+        /// Метод, отвечающий за видимость текст бокса и лейблов
+        /// прямоугольного выреза для поддува на форме.
+        /// </summary>
+        /// <param name="visible"></param>
+        private void SolidHoleVisible(bool visible)
+        {
+            solidHoleHieghtLabel.Visible = visible;
+            solidHoleHeightTextBox.Visible = visible;
+            solidHoleHeightBorderLabel.Visible = visible;
+        }
+
+        /// <summary>
+        /// Метод, отвечающий за видимость текст бокса и лейблов
+        /// прямоугольных пазов для шампуров на форме.
+        /// </summary>
+        /// <param name="visible"></param>
+        private void RectangleGrooveVisible(bool visible)
+        {
+            rectangleGrooveDistanceTextBox.Visible = visible;
+            rectangleGrooveHeightTextBox.Visible = visible;
+            rectangleGrooveWidthTextBox.Visible = visible;
+
+            rectangleGrooveDistanceBorderLabel.Visible = visible;
+            rectangleGrooveHeightBorderLabel.Visible = visible;
+            rectangleGrooveWidthBorderLabel.Visible = visible;
+
+            rectangleGrooveDistanceLabel.Visible = visible;
+            rectangleGrooveHeightLabel.Visible = visible;
+            rectangleGrooveWidthLabel.Visible = visible;
+        }
+
+        /// <summary>
+        /// Метод, отвечающий за видимость текст бокса и лейблов
+        /// круглых пазов для шампуров на форме.
+        /// </summary>
+        /// <param name="visible"></param>
+        private void CircleGrooveVisible(bool visible)
+        {
+            circleGrooveDiameterTextBox.Visible = visible;
+            circleGrooveDistanceTextBox.Visible = visible;
+
+            grooveDiameterBorderLable.Visible = visible;
+            grooveDistanceBorderLable.Visible = visible;
+
+            grooveDiameterLable.Visible = visible;
+            grooveDistanceLable.Visible = visible;
         }
 
         /// <summary>
@@ -365,21 +542,18 @@
         /// <param name="e">Событие.</param>
         private void HoleCircleRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            holeDiameterLable.Visible = true;
-            holeHeightLable.Visible = true;
-            holeDistanceLable.Visible = true;
+            _isCircleHolesSelected = true;
 
-            holeDiameterTextBox.Visible = true;
-            holeHeightTextBox.Visible = true;
-            holeDistanceTextBox.Visible = true;
+            CircleHoleVisible(true);
+            SolidHoleVisible(false);
 
-            holeDiameterBorderLable.Visible = true;
-            holeHeightBorderLable.Visible = true;
-            holeDistanceBorderLable.Visible = true;
+            _errorParameters[ParameterType.RectangleHoleHeight] = "";
 
-            solidHoleHieghtLabel.Visible = false;
-            solidHoleHeightTextBox.Visible = false;
-            solidHoleHeightBorderLabel.Visible = false;
+            CheckDependedTextBoxCorrect(ParameterType.CircleHoleDiameter);
+            CheckDependedTextBoxCorrect(ParameterType.CircleHoleHeight);
+            CheckDependedTextBoxCorrect(ParameterType.CircleHoleDistance);
+
+            UpdateErrorLable();
         }
 
         /// <summary>
@@ -389,21 +563,62 @@
         /// <param name="e">Событие.</param>
         private void HoleSolidRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            holeDiameterLable.Visible = false;
-            holeHeightLable.Visible = false;
-            holeDistanceLable.Visible = false;
+            _isCircleHolesSelected = false;
 
-            holeDiameterTextBox.Visible = false;
-            holeHeightTextBox.Visible = false;
-            holeDistanceTextBox.Visible = false;
+            CircleHoleVisible(false);
+            SolidHoleVisible(true);
 
-            holeDiameterBorderLable.Visible = false;
-            holeHeightBorderLable.Visible = false;
-            holeDistanceBorderLable.Visible = false;
+            _errorParameters[ParameterType.CircleHoleDiameter] = "";
+            _errorParameters[ParameterType.CircleHoleHeight] = "";
+            _errorParameters[ParameterType.CircleHoleDistance] = "";
 
-            solidHoleHieghtLabel.Visible = true;
-            solidHoleHeightTextBox.Visible = true;
-            solidHoleHeightBorderLabel.Visible = true;
+            CheckDependedTextBoxCorrect(ParameterType.RectangleHoleHeight);
+
+            UpdateErrorLable();
+        }
+
+        /// <summary>
+        /// Событие, случающееся при выборе круглого паза для шампура.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void grooveCircleRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _isCircleGrooveSelected = true;
+
+            RectangleGrooveVisible(false);
+            CircleGrooveVisible(true);
+
+            _errorParameters[ParameterType.RectangleGrooveDistance] = "";
+            _errorParameters[ParameterType.RectangleGrooveHeight] = "";
+            _errorParameters[ParameterType.RectangleGrooveWidth] = "";
+
+            CheckDependedTextBoxCorrect(ParameterType.CircleGrooveDiameter);
+            CheckDependedTextBoxCorrect(ParameterType.CircleGrooveDistance);
+
+            UpdateErrorLable();
+        }
+
+        /// <summary>
+        /// Событие, случающееся при выборе прямоугольного паза для шампура.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void grooveRectangleRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _isCircleGrooveSelected = false;
+
+            RectangleGrooveVisible(true);
+            CircleGrooveVisible(false);
+
+            _errorParameters[ParameterType.CircleGrooveDiameter] = "";
+            _errorParameters[ParameterType.CircleGrooveDistance] = "";
+
+            CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveDistance);
+            CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveWidth);
+            CheckDependedTextBoxCorrect(ParameterType.RectangleGrooveHeight);
+
+            UpdateErrorLable();
         }
     }
 }
