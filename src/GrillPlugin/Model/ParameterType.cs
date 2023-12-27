@@ -26,29 +26,49 @@
         BoxWallThickness,
 
         /// <summary>
-        /// Диаметр ямки для шампура.
+        /// Диаметр круголого паза для шампура.
         /// </summary>
-        GrooveDiameter,
+        CircleGrooveDiameter,
 
         /// <summary>
-        /// Расстояние между ямками для шампуров.
+        /// Расстояние между пазами для шампуров.
         /// </summary>
-        GrooveDistance,
+        CircleGrooveDistance,
 
         /// <summary>
-        /// Диаметр отверстия для воздуха.
+        /// Расстояние между прямоугольными пазами для шампуров.
         /// </summary>
-        HoleDiameter,
+        RectangleGrooveWidth,
+
+        /// <summary>
+        /// Глубина прямоугольных пазов для шампуров.
+        /// </summary>
+        RectangleGrooveHeight,
+
+        /// <summary>
+        /// Глубина прямоугольных пазов для шампуров.
+        /// </summary>
+        RectangleGrooveDistance,
+
+        /// <summary>
+        /// Диаметр круглого отверстия для воздуха.
+        /// </summary>
+        CircleHoleDiameter,
 
         /// <summary>
         /// Расстояние между отверстиями для воздуха.
         /// </summary>
-        HoleDistance,
+        CircleHoleDistance,
 
         /// <summary>
-        /// Высота цетра отверстия для воздуха.
+        /// Высота цетра круглого отверстия для воздуха.
         /// </summary>
-        HoleHeight,
+        CircleHoleHeight,
+
+        /// <summary>
+        /// Высота прямоугольного выреза для воздуха.
+        /// </summary>
+        RectangleHoleHeight,
 
         /// <summary>
         /// Диаметр ножки мангала.

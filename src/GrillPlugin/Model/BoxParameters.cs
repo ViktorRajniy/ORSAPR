@@ -1,9 +1,7 @@
-﻿using GrillPlugin.Model;
-
-namespace Model
+﻿namespace Model
 {
-    using System.Collections.Generic;
     using GrillPlugin.Model;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Параметры короба мангала.
@@ -101,6 +99,16 @@ namespace Model
         public void Set(ParameterType type, double value)
         {
             _boxParameters[type].Value = value;
+        }
+
+        /// <summary>
+        /// Возвращает параметр.
+        /// </summary>
+        /// <param name="type">Тип параметра.</param>
+        /// <returns>Параметр.</returns>
+        public Parameter GetParameter(ParameterType type)
+        {
+            return _boxParameters[type];
         }
     }
 }

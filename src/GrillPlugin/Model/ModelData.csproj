@@ -43,10 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoxParameters.cs" />
+    <Compile Include="CircleGroovesParameters.cs" />
+    <Compile Include="CircleHolesParameters.cs" />
+    <Compile Include="LegParameters.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="ParameterType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RectangleGroovesParameters.cs" />
+    <Compile Include="RectangleHolesParameters.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>

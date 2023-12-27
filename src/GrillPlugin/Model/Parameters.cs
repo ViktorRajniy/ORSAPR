@@ -1,6 +1,6 @@
 ﻿namespace GrillPlugin.Model
 {
-    using System.Collections.Generic;
+    using global::Model;
 
     /// <summary>
     /// Описание.
@@ -8,165 +8,234 @@
     public class Parameters
     {
         /// <summary>
-        /// Минимальная высота ножек мангала.
+        /// Параметры короба мангала.
         /// </summary>
-        private readonly double _minLegHeight = 500;
+        private readonly BoxParameters _boxParameters;
 
         /// <summary>
-        /// Максимальная высота ножек мангала.
+        /// Параметры ножек мангала.
         /// </summary>
-        private readonly double _maxLegHeight = 1000;
+        private readonly LegParameters _legParameters;
 
         /// <summary>
-        /// Минимальный диаметр ножек мангала.
+        /// Параметры круглых отверстий мангала.
         /// </summary>
-        private readonly double _minLegDiameter = 4;
+        private readonly CircleHolesParameters _circleHolesParameters;
 
         /// <summary>
-        /// Максимальный диаметр ножек мангала.
+        /// Параметры прямоугольного отверстия мангала.
         /// </summary>
-        private readonly double _maxLegDiameter = 150;
+        private readonly RectangleHolesParameters _rectangleHolesParameters;
 
         /// <summary>
-        /// Минимальный диаметр паза для шампура мангала.
+        /// Параметры круглых пазов мангала.
         /// </summary>
-        private readonly double _minGrooveDiameter = 5;
+        private readonly CircleGroovesParameters _circleGroovesParameters;
 
         /// <summary>
-        /// Максимальный диаметр паза для шампура мангала.
+        /// Параметры прямоугольных пазов мангала.
         /// </summary>
-        private readonly double _maxGrooveDiameter = 20;
-
-        /// <summary>
-        /// Минимальное расстояние между пазами для шампуров мангала.
-        /// </summary>
-        private readonly double _minGrooveDistance = 5;
-
-        /// <summary>
-        /// Максимальное расстояние между пазами для шампуров мангала.
-        /// </summary>
-        private readonly double _maxGrooveDistance = 490;
-
-        /// <summary>
-        /// Минимальный диаметр отверстия мангала.
-        /// </summary>
-        private readonly double _minHoleDiameter = 10;
-
-        /// <summary>
-        /// Максимальный диаметр отверстия мангала.
-        /// </summary>
-        private readonly double _maxHoleDiameter = 100;
-
-        /// <summary>
-        /// Минимальная высота центра отверстия мангала.
-        /// </summary>
-        private readonly double _minHoleHeight = 7;
-
-        /// <summary>
-        /// Максимальная высота центра отверстия мангала.
-        /// </summary>
-        private readonly double _maxHoleHeight = 97;
-
-        /// <summary>
-        /// Минимальное расстояние между отверстиями мангала.
-        /// </summary>
-        private readonly double _minHoleDistance = 10;
-
-        /// <summary>
-        /// Максимальное расстояние между отверстиями мангала.
-        /// </summary>
-        private readonly double _maxHoleDistance = 486;
-
-        /// <summary>
-        /// Словарь Тип параметра - Значение параметра мангала.
-        /// </summary>
-        private readonly Dictionary<ParameterType, Parameter> _parametersValue;
-
-        /// <summary>
-        /// Количество отверстий для вентиляции мангала.
-        /// </summary>
-        private int _holeCount;
-
-        /// <summary>
-        /// Количество пазов для шампуров мангала.
-        /// </summary>
-        private int _grooveCount;
+        private readonly RectangleGroovesParameters _rectangleGroovesParameters;
 
         /// <summary>
         /// Конструктор начальных значений.
         /// </summary>
         public Parameters()
         {
-            _parametersValue = new Dictionary<ParameterType, Parameter>
+            _boxParameters = new BoxParameters();
+            _legParameters = new LegParameters();
+            _circleHolesParameters = new CircleHolesParameters();
+            _rectangleHolesParameters = new RectangleHolesParameters();
+            _circleGroovesParameters = new CircleGroovesParameters();
+            _rectangleGroovesParameters = new RectangleGroovesParameters();
+        }
+
+        /// <summary>
+        /// Возвращает значение параметра.
+        /// </summary>
+        /// <param name="type">Тип параметра.</param>
+        /// <returns>Значение параметра.</returns>
+        public Parameter GetParameter(ParameterType type)
+        {
+            if (type == ParameterType.BoxLength
+                || type == ParameterType.BoxWidth
+                || type == ParameterType.BoxHeight
+                || type == ParameterType.BoxWallThickness)
             {
+                return _boxParameters.GetParameter(type);
+            }
+
+            if (type == ParameterType.LegHeight
+                || type == ParameterType.LegDiameter)
+            {
+                return _legParameters.GetParameter(type);
+            }
+
+            if (type == ParameterType.CircleHoleHeight
+                || type == ParameterType.CircleHoleDiameter
+                || type == ParameterType.CircleHoleDistance
+                || type == ParameterType.BoxWallThickness)
+            {
+                return _circleHolesParameters.GetParameter(type);
+            }
+
+            if (type == ParameterType.RectangleHoleHeight)
+            {
+                return _rectangleHolesParameters.GetParameter(type);
+            }
+
+            if (type == ParameterType.CircleGrooveDiameter
+                || type == ParameterType.CircleGrooveDistance)
+            {
+                return _circleGroovesParameters.GetParameter(type);
+            }
+
+            return _rectangleGroovesParameters.GetParameter(type);
+        }
+
+        /// <summary>
+        /// Задаёт новое значение параметра.
+        /// </summary>
+        /// <param name="type">Тип параметра.</param>
+        public void SetValue(ParameterType type, double value)
+        {
+            switch (type)
+            {
+                case ParameterType.BoxLength:
                 {
-                ParameterType.LegHeight,
-                new Parameter(
-                    _minLegHeight,
-                    _minLegHeight,
-                    _maxLegHeight)
-                },
-                {
-                ParameterType.LegDiameter,
-                new Parameter(
-                    _minLegDiameter,
-                    _minLegDiameter,
-                    _maxLegDiameter)
-                },
-                {
-                ParameterType.GrooveDiameter,
-                new Parameter(
-                    _minGrooveDiameter,
-                    _minGrooveDiameter,
-                    _maxGrooveDiameter)
-                },
-                {
-                ParameterType.GrooveDistance,
-                new Parameter(
-                    _minGrooveDistance,
-                    _minGrooveDistance,
-                    _maxGrooveDistance)
-                },
-                {
-                ParameterType.HoleDiameter,
-                new Parameter(
-                    _minHoleDiameter,
-                    _minHoleDiameter,
-                    _maxHoleDiameter)
-                },
-                {
-                ParameterType.HoleHeight,
-                new Parameter(
-                    _minHoleHeight,
-                    _minHoleHeight,
-                    _maxHoleHeight)
-                },
-                {
-                ParameterType.HoleDistance,
-                new Parameter(
-                    _minHoleDistance,
-                    _minHoleDistance,
-                    _maxHoleDistance)
+                    _boxParameters.Set(type, value);
+                    break;
                 }
-            };
+
+                case ParameterType.BoxWidth:
+                {
+                    _boxParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.BoxHeight:
+                {
+                    _boxParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.BoxWallThickness:
+                {
+                    _boxParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.LegHeight:
+                {
+                    _legParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.LegDiameter:
+                {
+                    _legParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.CircleHoleHeight:
+                {
+                    _circleHolesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.CircleHoleDiameter:
+                {
+                    _circleHolesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.CircleHoleDistance:
+                {
+                    _circleHolesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.RectangleHoleHeight:
+                {
+                    _rectangleHolesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.CircleGrooveDiameter:
+                {
+                    _circleGroovesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.CircleGrooveDistance:
+                {
+                    _circleGroovesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.RectangleGrooveDistance:
+                {
+                    _rectangleGroovesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.RectangleGrooveHeight:
+                {
+                    _rectangleGroovesParameters.Set(type, value);
+                    break;
+                }
+
+                case ParameterType.RectangleGrooveWidth:
+                {
+                    _rectangleGroovesParameters.Set(type, value);
+                    break;
+                }
+            }
         }
 
         /// <summary>
-        /// Возвращает значение количества пазов для шампуров мангала.
+        /// Инициализирует количество отверстий и пазов для шампуров мангала.
         /// </summary>
-        /// <returns>Количество пазов для шампуров мангала.</returns>
-        public int GetGrooveCount()
+        public void InitHoleGrooveCount()
         {
-            return _grooveCount;
+            _circleHolesParameters.CalculateHoleCount(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+
+            _circleGroovesParameters.CalculateGrooveCount(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+
+            _rectangleGroovesParameters.CalculateGrooveCount(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
         }
 
         /// <summary>
-        /// Возвращает значение количества отверстий для вентиляции мангала.
+        /// Возвращает количество круглых отверстий для поддува.
         /// </summary>
-        /// <returns>Количество отверстий для вентиляции.</returns>
-        public int GetHoleCount()
+        /// <returns>Количество круглых отверстий для поддува.</returns>
+        public int GetCircleHoleCount()
         {
-            return _holeCount;
+            return _circleHolesParameters.HoleCount;
+        }
+
+        /// <summary>
+        /// Возвращает количество круглых пазов для шампуров.
+        /// </summary>
+        /// <returns>Количество круглых пазов для шампуров.</returns>
+        public int GetCircleGroovesCount()
+        {
+            return _circleGroovesParameters.GrooveCount;
+        }
+
+        /// <summary>
+        /// Возвращает количество прямоугольных пазов для шампуров.
+        /// </summary>
+        /// <returns>Количество круглых пазов для шампуров.</returns>
+        public int GetRectangleGroovesCount()
+        {
+            return _rectangleGroovesParameters.GrooveCount;
         }
 
         /// <summary>
@@ -174,130 +243,70 @@
         /// </summary>
         public void UpdateBorders()
         {
-            NewGrooveDistanceBorders();
-            NewHoleDiameterBorders();
-            NewHoleDistanceBorders();
-            NewHoleHeightBorders();
-            NewLegDiameterBorders();
+            NewRectangleHoleBorders();
+            NewCircleHoleBorders();
+            NewRectangleGrooveBorders();
+            NewCircleGrooveBorders();
+            NewLegBorders();
         }
 
         /// <summary>
-        /// Метод, устанавливающий текущее значение параметра.
+        /// Метод, задающий новые границы круглых отверстий.
         /// </summary>
-        /// <param name="type">Тип параметра, в который передаётся значение.</param>
-        /// <param name="value">Новое значение параметра.</param>
-        public void SetValue(ParameterType type, double value)
+        private void NewRectangleHoleBorders()
         {
-            _parametersValue[type].Value = value;
+            _rectangleHolesParameters.NewRectangleHoleHeightBorders(
+                _boxParameters.GetParameter(ParameterType.BoxHeight).Value);
         }
 
         /// <summary>
-        /// Возвращает параметр, запрошенного типа.
+        /// Метод, задающий новые границы круглых отверстий.
         /// </summary>
-        /// <param name="type">Тип запрашиваемого параметра.</param>
-        /// <returns>Параметр, запрашиваемого типа.</returns>
-        public Parameter GetParameter(ParameterType type)
+        private void NewCircleHoleBorders()
         {
-            return _parametersValue[type];
+            _circleHolesParameters.NewCircleHoleDiameterBorders(
+                _boxParameters.GetParameter(ParameterType.BoxHeight).Value);
+
+            _circleHolesParameters.NewCircleHoleDistanceBorders(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+
+            _circleHolesParameters.NewCircleHoleHeightBorders(
+                _boxParameters.GetParameter(ParameterType.BoxHeight).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
         }
 
         /// <summary>
-        /// Присваивает количеству отверстий и пазов новые значения.
+        /// Метод, задающий новые границы расстояния между прямоугольными пазами.
         /// </summary>
-        public void InitHoleGrooveCount()
+        private void NewRectangleGrooveBorders()
         {
-            CalculateGrooveCount();
-            CalculateHoleCount();
+            _rectangleGroovesParameters.NewDistanceBorders(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+
+            _rectangleGroovesParameters.NewHeightBorders(
+                _boxParameters.GetParameter(ParameterType.BoxHeight).Value);
         }
 
         /// <summary>
-        /// Высчитывает количество отверстий для вентиляции в мангале.
+        /// Метод, задающий новые границы расстояния между круглыми пазами.
         /// </summary>
-        private void CalculateHoleCount()
+        private void NewCircleGrooveBorders()
         {
-            double holePlace =
-                (_parametersValue[ParameterType.BoxLength].Value -
-                (2 * _parametersValue[ParameterType.BoxWallThickness].Value)
-                - _parametersValue[ParameterType.HoleDiameter].Value) /
-                (_parametersValue[ParameterType.HoleDiameter].Value +
-                _parametersValue[ParameterType.HoleDistance].Value);
-            _holeCount = (int)holePlace;
+            _circleGroovesParameters.NewDistanceBorders(
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
         }
 
         /// <summary>
-        /// Высчитывает количество пазов для шампуров в мангале.
+        /// Метод, задающий новые границы ножек мангала.
         /// </summary>
-        private void CalculateGrooveCount()
+        private void NewLegBorders()
         {
-            double groovePlace =
-                (_parametersValue[ParameterType.BoxLength].Value -
-                (2 * _parametersValue[ParameterType.BoxWallThickness].Value)
-                - _parametersValue[ParameterType.GrooveDiameter].Value) /
-                (_parametersValue[ParameterType.GrooveDiameter].Value +
-                _parametersValue[ParameterType.GrooveDistance].Value);
-            _grooveCount = (int)groovePlace;
-        }
-
-        /// <summary>
-        /// Метод, задающий новые границы расстояния между отверстиями.
-        /// </summary>
-        private void NewHoleDistanceBorders()
-        {
-            _parametersValue[ParameterType.HoleDistance].MinValue =
-                _parametersValue[ParameterType.HoleDiameter].Value;
-            _parametersValue[ParameterType.HoleDistance].MaxValue =
-                _parametersValue[ParameterType.BoxLength].Value -
-                ((2 * _parametersValue[ParameterType.BoxWallThickness].Value)
-                 + _parametersValue[ParameterType.HoleDiameter].Value);
-        }
-
-        /// <summary>
-        /// Метод, задающий новые границы высоты центра отверстия.
-        /// </summary>
-        private void NewHoleHeightBorders()
-        {
-            _parametersValue[ParameterType.HoleHeight].MinValue =
-                _parametersValue[ParameterType.BoxWallThickness].Value +
-                (_parametersValue[ParameterType.HoleDiameter].Value / 2);
-            _parametersValue[ParameterType.HoleHeight].MaxValue =
-                (_parametersValue[ParameterType.BoxHeight].Value / 2) +
-                _parametersValue[ParameterType.BoxWallThickness].Value -
-                (_parametersValue[ParameterType.HoleDiameter].Value / 2);
-        }
-
-        /// <summary>
-        /// Метод, задающий новые границы диаметра отверстия.
-        /// </summary>
-        private void NewHoleDiameterBorders()
-        {
-            _parametersValue[ParameterType.HoleDiameter].MinValue =
-                _minHoleDiameter;
-            _parametersValue[ParameterType.HoleDiameter].MaxValue =
-                _parametersValue[ParameterType.BoxHeight].Value / 2;
-        }
-
-        /// <summary>
-        /// Метод, задающий новые границы расстояния между пазами.
-        /// </summary>
-        private void NewGrooveDistanceBorders()
-        {
-            _parametersValue[ParameterType.GrooveDistance].MinValue =
-                _parametersValue[ParameterType.GrooveDiameter].Value;
-            _parametersValue[ParameterType.GrooveDistance].MaxValue =
-                _parametersValue[ParameterType.BoxLength].Value -
-                ((2 * _parametersValue[ParameterType.BoxWallThickness].Value) +
-                 _parametersValue[ParameterType.GrooveDiameter].Value);
-        }
-
-        /// <summary>
-        /// Метод, задающий новые границы диаметра ножки мангала.
-        /// </summary>
-        private void NewLegDiameterBorders()
-        {
-            _parametersValue[ParameterType.LegDiameter].MinValue =
-                2 * _parametersValue[ParameterType.BoxWallThickness].Value;
-            _parametersValue[ParameterType.LegDiameter].MaxValue =
-                _parametersValue[ParameterType.BoxWidth].Value / 2;
+            _legParameters.NewDiameterBorders(
+                _boxParameters.GetParameter(ParameterType.BoxWidth).Value,
+                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
         }
     }
 }

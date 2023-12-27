@@ -58,7 +58,7 @@
             get => _min;
             set
             {
-                if (value < 0)
+                if (value <= 0)
                 {
                     throw new ArgumentException("минимальное значение меньше нуля");
                 }
