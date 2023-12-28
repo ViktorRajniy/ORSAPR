@@ -22,11 +22,11 @@ public class StressTests
 
         Parameters parameters = new Parameters();
 
-        parameters = InitMaxParameters(parameters);
+        parameters = InitMiddleParameters(parameters);
 
-        StreamWriter writer = new StreamWriter($"MaxLog.txt", false);
+        StreamWriter writer = new StreamWriter($"MaxRecHCirGLog.txt", false);
 
-        AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters, true, true);
+        AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters, false, true);
 
         Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
         var count = 0;
@@ -40,7 +40,7 @@ public class StressTests
             - computerInfo.AvailablePhysicalMemory)
             * gigabyteInByte;
             writer.WriteLine(
-            $"{++count}\t{stopWatch.Elapsed:hh\\:mm\\:ss}\t{usedMemory}");
+            $"{++count}\t{stopWatch.ElapsedMilliseconds}\t{usedMemory}");
             writer.Flush();
         }
 
