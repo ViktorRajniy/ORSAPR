@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ModelData
 {
     using GrillPlugin.Model;
     using System.Collections.Generic;
@@ -80,6 +80,8 @@
         /// <summary>
         /// Метод, задающий новые границы диаметра ножки мангала.
         /// </summary>
+        /// <param name="width">Ширина мангала.</param>
+        /// <param name="thickness">Толщина стен мангала.</param>
         public void NewDiameterBorders(double width, double thickness)
         {
             _legParameters[ParameterType.LegDiameter].MinValue =

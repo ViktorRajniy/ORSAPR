@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ModelData
 {
     using GrillPlugin.Model;
 

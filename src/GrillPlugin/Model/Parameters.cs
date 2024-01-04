@@ -1,6 +1,6 @@
 ﻿namespace GrillPlugin.Model
 {
-    using global::Model;
+    using global::ModelData;
 
     /// <summary>
     /// Описание.
@@ -96,59 +96,30 @@
         /// <summary>
         /// Задаёт новое значение параметра.
         /// </summary>
-        /// <param name="type">Тип параметра.</param>
+        /// <param name="type">Тип задаваемого параметра.</param>
+        /// <param name="value">Новое значение задаваемого параметра.</param>
         public void SetValue(ParameterType type, double value)
         {
             switch (type)
             {
                 case ParameterType.BoxLength:
-                {
-                    _boxParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.BoxWidth:
-                {
-                    _boxParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.BoxHeight:
-                {
-                    _boxParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.BoxWallThickness:
                 {
                     _boxParameters.Set(type, value);
                     break;
                 }
 
+                case ParameterType.LegDiameter:
                 case ParameterType.LegHeight:
                 {
                     _legParameters.Set(type, value);
                     break;
                 }
 
-                case ParameterType.LegDiameter:
-                {
-                    _legParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.CircleHoleHeight:
-                {
-                    _circleHolesParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.CircleHoleDiameter:
-                {
-                    _circleHolesParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.CircleHoleDistance:
                 {
                     _circleHolesParameters.Set(type, value);
@@ -162,11 +133,6 @@
                 }
 
                 case ParameterType.CircleGrooveDiameter:
-                {
-                    _circleGroovesParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.CircleGrooveDistance:
                 {
                     _circleGroovesParameters.Set(type, value);
@@ -174,17 +140,7 @@
                 }
 
                 case ParameterType.RectangleGrooveDistance:
-                {
-                    _rectangleGroovesParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.RectangleGrooveHeight:
-                {
-                    _rectangleGroovesParameters.Set(type, value);
-                    break;
-                }
-
                 case ParameterType.RectangleGrooveWidth:
                 {
                     _rectangleGroovesParameters.Set(type, value);
@@ -198,17 +154,37 @@
         /// </summary>
         public void InitHoleGrooveCount()
         {
-            _circleHolesParameters.CalculateHoleCount(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+            _circleHolesParameters.HoleCount = CalculateCount(
+                _circleHolesParameters.GetParameter(
+                    ParameterType.CircleHoleDiameter).Value,
+                _circleHolesParameters.GetParameter(
+                    ParameterType.CircleHoleDistance).Value);
 
-            _circleGroovesParameters.CalculateGrooveCount(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+            _circleGroovesParameters.GrooveCount = CalculateCount(
+                _circleGroovesParameters.GetParameter(
+                    ParameterType.CircleGrooveDiameter).Value,
+                _circleGroovesParameters.GetParameter(
+                    ParameterType.CircleGrooveDistance).Value);
 
-            _rectangleGroovesParameters.CalculateGrooveCount(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+            _rectangleGroovesParameters.GrooveCount = CalculateCount(
+                _rectangleGroovesParameters.GetParameter(
+                    ParameterType.RectangleGrooveWidth).Value,
+                _rectangleGroovesParameters.GetParameter(
+                    ParameterType.RectangleGrooveDistance).Value);
+        }
+
+        /// <summary>
+        /// Высчитывает количество элементов в ряду.
+        /// </summary>
+        /// <param name="width">Ширина элемента.</param>
+        /// <param name="distance">Расстояние между элементами.</param>
+        public int CalculateCount(double width, double distance)
+        {
+            double place =
+                (_boxParameters.GetParameter(ParameterType.BoxLength).Value -
+                 (2 * _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value)
+                        - width) / (width + distance);
+            return (int)place;
         }
 
         /// <summary>
@@ -264,16 +240,20 @@
         /// </summary>
         private void NewCircleHoleBorders()
         {
+            Parameter borderParameter = NewDistanceBorders(
+                _circleHolesParameters.GetParameter(
+                    ParameterType.CircleHoleDistance).Value);
+
+            _circleHolesParameters.SetCircleHoleDistanceBorders(
+                borderParameter.MinValue, borderParameter.MaxValue);
+
             _circleHolesParameters.NewCircleHoleDiameterBorders(
                 _boxParameters.GetParameter(ParameterType.BoxHeight).Value);
 
-            _circleHolesParameters.NewCircleHoleDistanceBorders(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
-
             _circleHolesParameters.NewCircleHoleHeightBorders(
                 _boxParameters.GetParameter(ParameterType.BoxHeight).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+                _boxParameters.GetParameter(
+                    ParameterType.BoxWallThickness).Value);
         }
 
         /// <summary>
@@ -281,12 +261,12 @@
         /// </summary>
         private void NewRectangleGrooveBorders()
         {
-            _rectangleGroovesParameters.NewDistanceBorders(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+            Parameter borderParameter = NewDistanceBorders(
+                _rectangleGroovesParameters.GetParameter(
+                    ParameterType.RectangleGrooveWidth).Value);
 
-            _rectangleGroovesParameters.NewHeightBorders(
-                _boxParameters.GetParameter(ParameterType.BoxHeight).Value);
+            _rectangleGroovesParameters.SetDistanceBorders(
+                borderParameter.MinValue, borderParameter.MaxValue);
         }
 
         /// <summary>
@@ -294,9 +274,31 @@
         /// </summary>
         private void NewCircleGrooveBorders()
         {
-            _circleGroovesParameters.NewDistanceBorders(
-                _boxParameters.GetParameter(ParameterType.BoxLength).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+            Parameter borderParameter = NewDistanceBorders(
+                _circleGroovesParameters.GetParameter(
+                    ParameterType.CircleGrooveDistance).Value);
+
+            _circleGroovesParameters.SetDistanceBorders(
+                borderParameter.MinValue, borderParameter.MaxValue);
+        }
+
+        /// <summary>
+        /// Метод определяющий новые границы расстояния между элементами.
+        /// </summary>
+        /// <param name="width">Ширина элемента.</param>
+        /// <returns>Параметр с новыми граничными значениями.</returns>
+        private Parameter NewDistanceBorders(double width)
+        {
+            Parameter borderParameter = new Parameter(1, 1, 1);
+
+            borderParameter.MaxValue =
+                _boxParameters.GetParameter(ParameterType.BoxLength).Value -
+                ((2 * _boxParameters.GetParameter(
+                    ParameterType.BoxWallThickness).Value) + width);
+            borderParameter.Value = width;
+            borderParameter.MinValue = width;
+
+            return borderParameter;
         }
 
         /// <summary>
@@ -305,8 +307,10 @@
         private void NewLegBorders()
         {
             _legParameters.NewDiameterBorders(
-                _boxParameters.GetParameter(ParameterType.BoxWidth).Value,
-                _boxParameters.GetParameter(ParameterType.BoxWallThickness).Value);
+                _boxParameters.GetParameter(
+                    ParameterType.BoxWidth).Value,
+                _boxParameters.GetParameter(
+                    ParameterType.BoxWallThickness).Value);
         }
     }
 }

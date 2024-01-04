@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ModelData
 {
     using GrillPlugin.Model;
     using System.Collections.Generic;
@@ -85,27 +85,13 @@
         /// <summary>
         /// Метод, задающий новые границы расстояния между пазами.
         /// </summary>
-        public void NewDistanceBorders(double length, double thickness)
+        /// <param name="min">Минимальная граница расстояния между элементами.</param>
+        /// <param name="max">Максимальная граница расстояния между элементами.</param>
+        public void SetDistanceBorders(double min, double max)
         {
-            _groovesParameters[ParameterType.CircleGrooveDistance].MinValue =
-                _groovesParameters[ParameterType.CircleGrooveDiameter].Value;
+            _groovesParameters[ParameterType.CircleGrooveDistance].MinValue = min;
 
-            _groovesParameters[ParameterType.CircleGrooveDistance].MaxValue =
-               length - ((2 * thickness) +
-                 _groovesParameters[ParameterType.CircleGrooveDiameter].Value);
-        }
-
-        /// <summary>
-        /// Высчитывает количество пазов для шампуров в мангале.
-        /// </summary>
-        public void CalculateGrooveCount(double length, double thickness)
-        {
-            double groovePlace =
-                (length - (2 * thickness)
-                - _groovesParameters[ParameterType.CircleGrooveDiameter].Value) /
-                (_groovesParameters[ParameterType.CircleGrooveDiameter].Value +
-                _groovesParameters[ParameterType.CircleGrooveDistance].Value);
-            GrooveCount = (int)groovePlace;
+            _groovesParameters[ParameterType.CircleGrooveDistance].MaxValue = max;
         }
     }
 }

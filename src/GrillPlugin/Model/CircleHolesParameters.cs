@@ -1,7 +1,6 @@
-﻿namespace Model
+﻿namespace ModelData
 {
     using GrillPlugin.Model;
-
     using System.Collections.Generic;
 
     /// <summary>
@@ -103,6 +102,8 @@
         /// <summary>
         /// Метод, задающий новые границы высоты центра отверстия.
         /// </summary>
+        /// <param name="height">Высота короба мангала.</param>
+        /// <param name="thickness">Толщина стен мангала.</param>
         public void NewCircleHoleHeightBorders(double height, double thickness)
         {
             _circleHolesParameters[ParameterType.CircleHoleHeight].MinValue =
@@ -117,6 +118,7 @@
         /// <summary>
         /// Метод, задающий новые границы диаметра круглого отверстия.
         /// </summary>
+        /// <param name="height">Высота короба мангала.</param>
         public void NewCircleHoleDiameterBorders(double height)
         {
             _circleHolesParameters[ParameterType.CircleHoleDiameter].MinValue =
@@ -129,27 +131,13 @@
         /// <summary>
         /// Метод, задающий новые границы расстояния между отверстиями.
         /// </summary>
-        public void NewCircleHoleDistanceBorders(double lenght, double thickness)
+        /// <param name="min">Минимальная граница расстояния между элементами.</param>
+        /// <param name="max">Максимальная граница расстояния между элементами.</param>
+        public void SetCircleHoleDistanceBorders(double min, double max)
         {
-            _circleHolesParameters[ParameterType.CircleHoleDistance].MinValue =
-                _circleHolesParameters[ParameterType.CircleHoleDiameter].Value;
+            _circleHolesParameters[ParameterType.CircleHoleDistance].MinValue = min;
 
-            _circleHolesParameters[ParameterType.CircleHoleDistance].MaxValue =
-                lenght - ((2 * thickness)
-                          + _circleHolesParameters[ParameterType.CircleHoleDiameter].Value);
-        }
-
-        /// <summary>
-        /// Высчитывает количество отверстий для вентиляции в мангале.
-        /// </summary>
-        public void CalculateHoleCount(double length, double thickness)
-        {
-            double holePlace =
-                (length - (2 * thickness)
-                - _circleHolesParameters[ParameterType.CircleHoleDiameter].Value) /
-                (_circleHolesParameters[ParameterType.CircleHoleDiameter].Value +
-                _circleHolesParameters[ParameterType.CircleHoleDistance].Value);
-            HoleCount = (int)holePlace;
+            _circleHolesParameters[ParameterType.CircleHoleDistance].MaxValue = max;
         }
     }
 }

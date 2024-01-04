@@ -1,7 +1,6 @@
-﻿namespace Model
+﻿namespace ModelData
 {
     using GrillPlugin.Model;
-
     using System.Collections.Generic;
 
     /// <summary>
@@ -103,36 +102,25 @@
         /// <summary>
         /// Метод, задающий новые границы расстояния между пазами.
         /// </summary>
-        public void NewDistanceBorders(double length, double thickness)
+        /// <param name="min">Минимальная граница расстояния между элементами.</param>
+        /// <param name="max">Максимальная граница расстояния между элементами.</param>
+        public void SetDistanceBorders(double min, double max)
         {
-            _rectangleGroovesParameters[ParameterType.RectangleGrooveDistance].MinValue =
-                _rectangleGroovesParameters[ParameterType.RectangleGrooveWidth].Value;
+            _rectangleGroovesParameters[
+                ParameterType.RectangleGrooveDistance].MinValue = min;
 
-            _rectangleGroovesParameters[ParameterType.RectangleGrooveDistance].MaxValue =
-                length - ((2 * thickness) +
-                          _rectangleGroovesParameters[ParameterType.RectangleGrooveWidth].Value);
+            _rectangleGroovesParameters[
+                ParameterType.RectangleGrooveDistance].MaxValue = max;
         }
 
         /// <summary>
         /// Метод, задающий новые границы высоты пазов.
         /// </summary>
+        /// <param name="height">Высота короба мангала.</param>
         public void NewHeightBorders(double height)
         {
             _rectangleGroovesParameters[ParameterType.RectangleGrooveHeight].MaxValue =
                 height / 4;
-        }
-
-        /// <summary>
-        /// Высчитывает количество пазов для шампуров в мангале.
-        /// </summary>
-        public void CalculateGrooveCount(double length, double thickness)
-        {
-            double groovePlace =
-                (length - (2 * thickness)
-                - _rectangleGroovesParameters[ParameterType.RectangleGrooveWidth].Value) /
-                (_rectangleGroovesParameters[ParameterType.RectangleGrooveWidth].Value +
-                _rectangleGroovesParameters[ParameterType.RectangleGrooveDistance].Value);
-            GrooveCount = (int)groovePlace;
         }
     }
 }
