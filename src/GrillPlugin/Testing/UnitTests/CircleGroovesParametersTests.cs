@@ -1,16 +1,17 @@
 ﻿namespace UnitTests
 {
-    using Model;
+    using ModelData;
 
     [TestFixture]
     public class CircleGroovesParametersTests
     {
         [Test(Description = "Позитивный тест конструктора CircleGroovesParameters")]
-        public void CircleGroovesParameters_ValueIsConstructed()
+        [TestCase(ParameterType.CircleGrooveDistance, 5, 5, 490)]
+        [TestCase(ParameterType.CircleGrooveDiameter, 5, 5, 20)]
+        public void CircleGroovesParameters_ValueIsConstructed(ParameterType type,
+            double expectedValue, double expectedMinValue, double expectedMaxValue)
         {
             // Setup:
-            Parameter expectedDiameter = new Parameter(5, 5, 20);
-            Parameter expectedDistanse = new Parameter(5, 5, 490);
 
             // Testing:
             CircleGroovesParameters actual = new CircleGroovesParameters();
@@ -20,65 +21,52 @@
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDiameter).MinValue,
-                        Is.EqualTo(expectedDiameter.MinValue));
+                        actual.GetParameter(type).MinValue,
+                        Is.EqualTo(expectedMinValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDiameter).Value,
-                        Is.EqualTo(expectedDiameter.Value));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDiameter).MaxValue,
-                        Is.EqualTo(expectedDiameter.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDistance).MinValue,
-                        Is.EqualTo(expectedDistanse.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDistance).Value,
-                        Is.EqualTo(expectedDistanse.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDistance).MaxValue,
-                        Is.EqualTo(expectedDistanse.MaxValue));
+                        actual.GetParameter(type).MaxValue,
+                        Is.EqualTo(expectedMaxValue));
                 });
         }
 
         [Test(Description = "Позитивный тест сеттера Set")]
-        public void CircleGroovesParameters_SetCorrectValue_ValueIsSetted()
+        [TestCase(ParameterType.CircleGrooveDiameter, 15, 15)]
+        [TestCase(ParameterType.CircleGrooveDistance, 200, 200)]
+        public void CircleGroovesParameters_SetCorrectValue_ValueIsSetted(ParameterType type,
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedDiameter = 15;
-            double expectedDistanse = 200;
-
-            // Testing:
             CircleGroovesParameters actual = new CircleGroovesParameters();
 
-            actual.Set(ParameterType.CircleGrooveDiameter, 15);
-            actual.Set(ParameterType.CircleGrooveDistance, 200);
+            // Testing:
+
+            actual.Set(type, value);
 
             // Assert:
             Assert.Multiple(
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDiameter).Value,
-                        Is.EqualTo(expectedDiameter));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.CircleGrooveDistance).Value,
-                        Is.EqualTo(expectedDistanse));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                 });
         }
 
-        [Test(Description = "Позитивный тест метода NewDistanceBorders")]
-        public void CircleGroovesParameters_NewDistanceBorders_NewBordersIsSetted()
+        [Test(Description = "Позитивный тест метода SetDistanceBorders")]
+        [TestCase(20, 960, 20, 960)]
+        public void CircleGroovesParameters_SetDistanceBorders_NewBordersIsSetted(
+            double minValue, double maxValue, double expectedMin, double expectedMax)
         {
             // Setup:
-            double expectedMinDistance = 20;
-            double expectedMaxDistance = 960;
-
-            // Testing:
             CircleGroovesParameters actual = new CircleGroovesParameters();
 
+            // Testing:
             actual.Set(ParameterType.CircleGrooveDiameter, 20);
 
-            actual.NewDistanceBorders(1000, 10);
+            actual.SetDistanceBorders(minValue, maxValue);
 
             // Assert:
             Assert.Multiple(
@@ -86,32 +74,26 @@
                 {
                     Assert.That(
                         actual.GetParameter(ParameterType.CircleGrooveDistance).MinValue,
-                        Is.EqualTo(expectedMinDistance));
+                        Is.EqualTo(expectedMin));
                     Assert.That(
                         actual.GetParameter(ParameterType.CircleGrooveDistance).MaxValue,
-                        Is.EqualTo(expectedMaxDistance));
+                        Is.EqualTo(expectedMax));
                 });
         }
 
-        [Test(Description = "Позитивный тест метода CalculateGrooveCount")]
-        public void CircleGroovesParameters_CalculateGrooveCount_CountCorrect()
+        [Test(Description = "Позитивный тест сеттера GroovesCount")]
+        [TestCase(10, 10)]
+        public void ParameterValue_SetCorrectValue_ValueIsSetted(
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedCount = 37;
-
-            // Testing:
             CircleGroovesParameters actual = new CircleGroovesParameters();
 
-            actual.CalculateGrooveCount(400, 10);
+            // Testing:
+            actual.GrooveCount = 10;
 
             // Assert:
-            Assert.Multiple(
-                () =>
-                {
-                    Assert.That(
-                        actual.GrooveCount,
-                        Is.EqualTo(expectedCount));
-                });
+            Assert.AreEqual(expectedValue, actual.GrooveCount);
         }
     }
 }

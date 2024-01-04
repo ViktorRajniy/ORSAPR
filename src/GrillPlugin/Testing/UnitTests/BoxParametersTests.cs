@@ -1,21 +1,21 @@
 ﻿namespace UnitTests
 {
-    using Model;
+    using ModelData;
 
     [TestFixture]
     public class BoxParametersTests
     {
         [Test(Description = "Позитивный тест конструктора BoxParameters")]
-        public void BoxParameters_ValueIsConstructed()
+        [TestCase(ParameterType.BoxLength, 500, 500, 2000)]
+        [TestCase(ParameterType.BoxWidth, 300, 300, 500)]
+        [TestCase(ParameterType.BoxHeight, 200, 200, 500)]
+        [TestCase(ParameterType.BoxWallThickness, 2, 2, 8)]
+        public void BoxParameters_ValueIsConstructed(ParameterType type,
+            double expectedValue, double expectedMinValue, double expectedMaxValue)
         {
             // Setup:
-            Parameter expectedLenght = new Parameter(500, 500, 2000);
-            Parameter expectedWidth = new Parameter(300, 300, 500);
-            Parameter expectedHeight = new Parameter(200, 200, 500);
-            Parameter expectedThickness = new Parameter(2, 2, 8);
 
             // Testing:
-
             BoxParameters actual = new BoxParameters();
 
             // Assert:
@@ -23,76 +23,35 @@
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.BoxLength).MinValue,
-                        Is.EqualTo(expectedLenght.MinValue));
+                        actual.GetParameter(type).Value, Is.EqualTo(expectedValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.BoxLength).Value,
-                        Is.EqualTo(expectedLenght.Value));
+                        actual.GetParameter(type).MinValue, Is.EqualTo(expectedMinValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.BoxLength).MaxValue,
-                        Is.EqualTo(expectedLenght.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWidth).MinValue,
-                        Is.EqualTo(expectedWidth.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWidth).Value,
-                        Is.EqualTo(expectedWidth.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWidth).MaxValue,
-                        Is.EqualTo(expectedWidth.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxHeight).MinValue,
-                        Is.EqualTo(expectedHeight.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxHeight).Value,
-                        Is.EqualTo(expectedHeight.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxHeight).MaxValue,
-                        Is.EqualTo(expectedHeight.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWallThickness).MinValue,
-                        Is.EqualTo(expectedThickness.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWallThickness).Value,
-                        Is.EqualTo(expectedThickness.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWallThickness).MaxValue,
-                        Is.EqualTo(expectedThickness.MaxValue));
+                        actual.GetParameter(type).MaxValue, Is.EqualTo(expectedMaxValue));
                 });
         }
 
         [Test(Description = "Позитивный тест сеттера Set")]
-        public void BoxParameters_SetCorrectValue_ValueIsSetted()
+        [TestCase(ParameterType.BoxLength, 750, 750)]
+        [TestCase(ParameterType.BoxWidth, 325, 325)]
+        [TestCase(ParameterType.BoxHeight, 400, 400)]
+        [TestCase(ParameterType.BoxWallThickness, 6, 6)]
+        public void BoxParameters_SetCorrectValue_ValueIsSetted(ParameterType type,
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedLenght = 750;
-            double expectedWidth = 325;
-            double expectedHeight = 400;
-            double expectedThickness = 6;
 
             // Testing:
             BoxParameters actual = new BoxParameters();
-            actual.Set(ParameterType.BoxLength, 750);
-            actual.Set(ParameterType.BoxWidth, 325);
-            actual.Set(ParameterType.BoxHeight, 400);
-            actual.Set(ParameterType.BoxWallThickness, 6);
+            actual.Set(type, value);
 
             // Assert:
             Assert.Multiple(
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.BoxLength).Value,
-                        Is.EqualTo(expectedLenght));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWidth).Value,
-                        Is.EqualTo(expectedWidth));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxHeight).Value,
-                        Is.EqualTo(expectedHeight));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.BoxWallThickness).Value,
-                        Is.EqualTo(expectedThickness));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                 });
         }
     }

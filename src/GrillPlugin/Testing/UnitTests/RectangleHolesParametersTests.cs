@@ -1,15 +1,16 @@
 ﻿namespace UnitTests
 {
-    using Model;
+    using ModelData;
 
     [TestFixture]
     public class RectangleHolesParametersTests
     {
         [Test(Description = "Позитивный тест конструктора RectangleHolesParameters")]
-        public void RectangleHolesParameters_ValueIsConstructed()
+        [TestCase(ParameterType.RectangleHoleHeight, 20, 20, 249)]
+        public void RectangleHolesParameters_ValueIsConstructed(ParameterType type,
+            double expectedValue, double expectedMinValue, double expectedMaxValue)
         {
             // Setup:
-            Parameter expectedHeight = new Parameter(20, 20, 249);
 
             // Testing:
             RectangleHolesParameters actual = new RectangleHolesParameters();
@@ -19,50 +20,52 @@
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleHoleHeight).MinValue,
-                        Is.EqualTo(expectedHeight.MinValue));
+                        actual.GetParameter(type).MinValue,
+                        Is.EqualTo(expectedMinValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleHoleHeight).Value,
-                        Is.EqualTo(expectedHeight.Value));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleHoleHeight).MaxValue,
-                        Is.EqualTo(expectedHeight.MaxValue));
+                        actual.GetParameter(type).MaxValue,
+                        Is.EqualTo(expectedMaxValue));
                 });
         }
 
         [Test(Description = "Позитивный тест сеттера Set")]
-        public void RectangleHolesParameters_SetCorrectValue_ValueIsSetted()
+        [TestCase(ParameterType.RectangleHoleHeight, 100, 100)]
+        public void RectangleHolesParameters_SetCorrectValue_ValueIsSetted(ParameterType type,
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedHeight = 100;
 
             // Testing:
             RectangleHolesParameters actual = new RectangleHolesParameters();
-            actual.Set(ParameterType.RectangleHoleHeight, 100);
+
+            actual.Set(type, value);
 
             // Assert:
             Assert.Multiple(
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleHoleHeight).Value,
-                        Is.EqualTo(expectedHeight));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                 });
         }
 
         [Test(Description = "Позитивный тест метода NewRectangleHoleHeightBorders")]
-        public void RectangleHolesParameters_NewRectangleHoleHeightBorders_NewBordersIsSetted()
+        [TestCase(25, 200, 20, 100)]
+        public void RectangleHolesParameters_NewRectangleHoleHeightBorders_NewBordersIsSetted(
+            double holeHeight, double height, double expectedMin, double expectedMax)
         {
             // Setup:
-            double expectedMinHeight = 20;
-            double expectedMaxHeight = 100;
 
             // Testing:
             RectangleHolesParameters actual = new RectangleHolesParameters();
 
-            actual.Set(ParameterType.RectangleHoleHeight, 25);
+            actual.Set(ParameterType.RectangleHoleHeight, holeHeight);
 
-            actual.NewRectangleHoleHeightBorders(200);
+            actual.NewRectangleHoleHeightBorders(height);
 
             // Assert:
             Assert.Multiple(
@@ -70,10 +73,10 @@
                 {
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleHoleHeight).MinValue,
-                        Is.EqualTo(expectedMinHeight));
+                        Is.EqualTo(expectedMin));
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleHoleHeight).MaxValue,
-                        Is.EqualTo(expectedMaxHeight));
+                        Is.EqualTo(expectedMax));
                 });
         }
     }

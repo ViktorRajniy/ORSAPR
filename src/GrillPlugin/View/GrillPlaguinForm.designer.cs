@@ -335,7 +335,7 @@
 			this.grooveRectangleRadioButton.TabStop = true;
 			this.grooveRectangleRadioButton.Text = "Прямоугольник";
 			this.grooveRectangleRadioButton.UseVisualStyleBackColor = true;
-			this.grooveRectangleRadioButton.CheckedChanged += new System.EventHandler(this.grooveRectangleRadioButton_CheckedChanged);
+			this.grooveRectangleRadioButton.CheckedChanged += new System.EventHandler(this.GrooveRectangleRadioButton_CheckedChanged);
 			// 
 			// grooveCircleRadioButton
 			// 
@@ -347,7 +347,7 @@
 			this.grooveCircleRadioButton.TabStop = true;
 			this.grooveCircleRadioButton.Text = "Окружность";
 			this.grooveCircleRadioButton.UseVisualStyleBackColor = true;
-			this.grooveCircleRadioButton.CheckedChanged += new System.EventHandler(this.grooveCircleRadioButton_CheckedChanged);
+			this.grooveCircleRadioButton.CheckedChanged += new System.EventHandler(this.GrooveCircleRadioButton_CheckedChanged);
 			// 
 			// grooveDiameterBorderLable
 			// 

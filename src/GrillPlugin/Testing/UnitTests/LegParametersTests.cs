@@ -1,16 +1,17 @@
 ﻿namespace UnitTests
 {
-    using Model;
+    using ModelData;
 
     [TestFixture]
     public class LegParametersTests
     {
         [Test(Description = "Позитивный тест конструктора LegParameters")]
-        public void LegParameters_ValueIsConstructed()
+        [TestCase(ParameterType.LegDiameter, 4, 4, 150)]
+        [TestCase(ParameterType.LegHeight, 500, 500, 1000)]
+        public void LegParameters_ValueIsConstructed(ParameterType type,
+            double expectedValue, double expectedMinValue, double expectedMaxValue)
         {
             // Setup:
-            Parameter expectedHeight = new Parameter(500, 500, 1000);
-            Parameter expectedDiameter = new Parameter(4, 4, 150);
 
             // Testing:
             LegParameters actual = new LegParameters();
@@ -20,61 +21,48 @@
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.LegHeight).MinValue,
-                        Is.EqualTo(expectedHeight.MinValue));
+                        actual.GetParameter(type).MinValue,
+                        Is.EqualTo(expectedMinValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.LegHeight).Value,
-                        Is.EqualTo(expectedHeight.Value));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.LegHeight).MaxValue,
-                        Is.EqualTo(expectedHeight.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.LegDiameter).MinValue,
-                        Is.EqualTo(expectedDiameter.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.LegDiameter).Value,
-                        Is.EqualTo(expectedDiameter.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.LegDiameter).MaxValue,
-                        Is.EqualTo(expectedDiameter.MaxValue));
+                        actual.GetParameter(type).MaxValue,
+                        Is.EqualTo(expectedMaxValue));
                 });
         }
 
         [Test(Description = "Позитивный тест сеттера Set")]
-        public void LegParameters_SetCorrectValue_ValueIsSetted()
+        [TestCase(ParameterType.LegDiameter, 50, 50)]
+        [TestCase(ParameterType.LegHeight, 700, 700)]
+        public void LegParameters_SetCorrectValue_ValueIsSetted(ParameterType type,
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedHeight = 700;
-            double expectedDiameter = 50;
+            LegParameters actual = new LegParameters();
 
             // Testing:
-            LegParameters actual = new LegParameters();
-            actual.Set(ParameterType.LegHeight, 700);
-            actual.Set(ParameterType.LegDiameter, 50);
+            actual.Set(type, value);
 
             // Assert:
             Assert.Multiple(
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.LegHeight).Value,
-                        Is.EqualTo(expectedHeight));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.LegDiameter).Value,
-                        Is.EqualTo(expectedDiameter));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                 });
         }
 
         [Test(Description = "Позитивный тест метода NewDiameterBorders")]
-        public void LegParameters_NewDiameterBorders_NewBordersIsSetted()
+        [TestCase(20, 250, 20, 250)]
+        public void LegParameters_NewDiameterBorders_NewBordersIsSetted(
+            double minValue, double maxValue, double expectedMin, double expectedMax)
         {
             // Setup:
-            double expectedMinDiameter = 20;
-            double expectedMaxDiameter = 250;
-
-            // Testing:
             LegParameters actual = new LegParameters();
 
+            // Testing:
             actual.Set(ParameterType.LegDiameter, 50);
 
             actual.NewDiameterBorders(500, 10);
@@ -85,10 +73,10 @@
                 {
                     Assert.That(
                         actual.GetParameter(ParameterType.LegDiameter).MinValue,
-                        Is.EqualTo(expectedMinDiameter));
+                        Is.EqualTo(expectedMin));
                     Assert.That(
                         actual.GetParameter(ParameterType.LegDiameter).MaxValue,
-                        Is.EqualTo(expectedMaxDiameter));
+                        Is.EqualTo(expectedMax));
                 });
         }
     }

@@ -63,6 +63,23 @@
         }
 
         [Test(Description = "Негативный тест сеттера MinValue")]
+        public void ParameterMinValue_NewValueSet_ValueIsNotSetted()
+        {
+            // Setup:
+            double newMin = -4;
+
+            // Testing:
+            Parameter setup = new Parameter(3, 1, 5);
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    setup.MinValue = newMin;
+                });
+        }
+
+        [Test(Description = "Негативный тест сеттера MinValue")]
         public void ParameterMinValue_SetNullValue_ValueIsSetted()
         {
             // Setup:
@@ -118,6 +135,23 @@
                 () =>
                 {
                     Parameter setup = new Parameter(10, 10, 5);
+                });
+        }
+
+        [Test(Description = "Негативный тест сеттера MaxValue")]
+        public void ParameterMaxValue_NewValueSet_ValueIsNotSetted()
+        {
+            // Setup:
+            double newMin = -4;
+
+            // Testing:
+            Parameter setup = new Parameter(3, 1, 5);
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    setup.MaxValue = newMin;
                 });
         }
 
@@ -184,6 +218,25 @@
                 () =>
                 {
                     Parameter setup = new Parameter(2, 5, 10);
+                });
+        }
+
+        [Test(Description = "Негативный тест метода MinMaxValidate")]
+        [TestCase(2,10,5,1)]
+        [TestCase(2, 10, 5, 11)]
+        public void MinMaxValidate_GetNewIncorrectValue_TestNotPassed(
+            double min, double max, double value, double newValue)
+        {
+            // Setup:
+
+            // Testing:
+            Parameter setup = new Parameter(value, min, max);
+
+            // Assert:
+            Assert.Throws<ArgumentException>(
+                () =>
+                {
+                    setup.Value = newValue;
                 });
         }
 

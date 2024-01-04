@@ -1,17 +1,18 @@
 ﻿namespace UnitTests
 {
-    using Model;
+    using ModelData;
 
     [TestFixture]
     public class RectangleGroovesParametersTests
     {
         [Test(Description = "Позитивный тест конструктора RectangleGroovesParameters")]
-        public void RectangleGroovesParameters_ValueIsConstructed()
+        [TestCase(ParameterType.RectangleGrooveHeight, 20, 20, 100)]
+        [TestCase(ParameterType.RectangleGrooveWidth, 5, 5, 20)]
+        [TestCase(ParameterType.RectangleGrooveDistance, 20, 20, 490)]
+        public void RectangleGroovesParameters_ValueIsConstructed(ParameterType type,
+            double expectedValue, double expectedMinValue, double expectedMaxValue)
         {
             // Setup:
-            Parameter expectedHeight = new Parameter(20, 20, 100);
-            Parameter expectedWidth = new Parameter(5, 5, 20);
-            Parameter expectedDistanse = new Parameter(20, 20, 490);
 
             // Testing:
             RectangleGroovesParameters actual = new RectangleGroovesParameters();
@@ -21,77 +22,52 @@
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveHeight).MinValue,
-                        Is.EqualTo(expectedHeight.MinValue));
+                        actual.GetParameter(type).MinValue,
+                        Is.EqualTo(expectedMinValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveHeight).Value,
-                        Is.EqualTo(expectedHeight.Value));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveHeight).MaxValue,
-                        Is.EqualTo(expectedHeight.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveWidth).MinValue,
-                        Is.EqualTo(expectedWidth.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveWidth).Value,
-                        Is.EqualTo(expectedWidth.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveWidth).MaxValue,
-                        Is.EqualTo(expectedWidth.MaxValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveDistance).MinValue,
-                        Is.EqualTo(expectedDistanse.MinValue));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveDistance).Value,
-                        Is.EqualTo(expectedDistanse.Value));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveDistance).MaxValue,
-                        Is.EqualTo(expectedDistanse.MaxValue));
+                        actual.GetParameter(type).MaxValue,
+                        Is.EqualTo(expectedMaxValue));
                 });
         }
 
         [Test(Description = "Позитивный тест сеттера Set")]
-        public void RectangleGroovesParameters_SetCorrectValue_ValueIsSetted()
+        [TestCase(ParameterType.RectangleGrooveHeight, 80, 80)]
+        [TestCase(ParameterType.RectangleGrooveWidth, 11, 11)]
+        [TestCase(ParameterType.RectangleGrooveDistance, 200, 200)]
+        public void RectangleGroovesParameters_SetCorrectValue_ValueIsSetted(ParameterType type,
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedHeight = 80;
-            double expectedWidth = 11;
-            double expectedDistanse = 200;
 
             // Testing:
             RectangleGroovesParameters actual = new RectangleGroovesParameters();
 
-            actual.Set(ParameterType.RectangleGrooveHeight, 80);
-            actual.Set(ParameterType.RectangleGrooveWidth, 11);
-            actual.Set(ParameterType.RectangleGrooveDistance, 200);
+            actual.Set(type, value);
 
             // Assert:
             Assert.Multiple(
                 () =>
                 {
                     Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveHeight).Value,
-                        Is.EqualTo(expectedHeight));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveWidth).Value,
-                        Is.EqualTo(expectedWidth));
-                    Assert.That(
-                        actual.GetParameter(ParameterType.RectangleGrooveDistance).Value,
-                        Is.EqualTo(expectedDistanse));
+                        actual.GetParameter(type).Value,
+                        Is.EqualTo(expectedValue));
                 });
         }
 
         [Test(Description = "Позитивный тест метода NewHeightBorders")]
-        public void RectangleGroovesParameters_NewHeightBorders_NewBordersIsSetted()
+        [TestCase(20, 250, 1000)]
+        public void RectangleGroovesParameters_NewHeightBorders_NewBordersIsSetted(
+            double expectedMin, double expectedMax, double height)
         {
             // Setup:
-            double expectedMinHeight = 20;
-            double expectedMaxHeight = 250;
 
             // Testing:
             RectangleGroovesParameters actual = new RectangleGroovesParameters();
 
-            actual.NewHeightBorders(1000);
+            actual.NewHeightBorders(height);
 
             // Assert:
             Assert.Multiple(
@@ -99,24 +75,25 @@
                 {
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleGrooveHeight).MinValue,
-                        Is.EqualTo(expectedMinHeight));
+                        Is.EqualTo(expectedMin));
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleGrooveHeight).MaxValue,
-                        Is.EqualTo(expectedMaxHeight));
+                        Is.EqualTo(expectedMax));
                 });
         }
 
-        [Test(Description = "Позитивный тест метода NewDistanceBorders")]
-        public void RectangleGroovesParameters_NewDistanceBorders_NewBordersIsSetted()
+        [Test(Description = "Позитивный тест метода SetDistanceBorders")]
+        [TestCase(20, 960, 20, 960)]
+        public void RectangleGroovesParameters_SetDistanceBorders_NewBordersIsSetted(
+            double minValue, double maxValue, double expectedMin, double expectedMax)
         {
             // Setup:
-            double expectedMinHeight = 5;
-            double expectedMaxHeight = 975;
-
-            // Testing:
             RectangleGroovesParameters actual = new RectangleGroovesParameters();
 
-            actual.NewDistanceBorders(1000, 10);
+            // Testing:
+            actual.Set(ParameterType.RectangleGrooveWidth, 20);
+
+            actual.SetDistanceBorders(minValue, maxValue);
 
             // Assert:
             Assert.Multiple(
@@ -124,32 +101,26 @@
                 {
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleGrooveDistance).MinValue,
-                        Is.EqualTo(expectedMinHeight));
+                        Is.EqualTo(expectedMin));
                     Assert.That(
                         actual.GetParameter(ParameterType.RectangleGrooveDistance).MaxValue,
-                        Is.EqualTo(expectedMaxHeight));
+                        Is.EqualTo(expectedMax));
                 });
         }
 
-        [Test(Description = "Позитивный тест метода CalculateGrooveCount")]
-        public void RectangleGroovesParameters_CalculateGrooveCount_CountCorrect()
+        [Test(Description = "Позитивный тест сеттера GroovesCount")]
+        [TestCase(10, 10)]
+        public void RectangleGroovesParameters_SetCorrectValue_ValueIsSetted(
+            double value, double expectedValue)
         {
             // Setup:
-            double expectedCount = 15;
-
-            // Testing:
             RectangleGroovesParameters actual = new RectangleGroovesParameters();
 
-            actual.CalculateGrooveCount(400, 10);
+            // Testing:
+            actual.GrooveCount = 10;
 
             // Assert:
-            Assert.Multiple(
-                () =>
-                {
-                    Assert.That(
-                        actual.GrooveCount,
-                        Is.EqualTo(expectedCount));
-                });
+            Assert.AreEqual(expectedValue, actual.GrooveCount);
         }
     }
 }
