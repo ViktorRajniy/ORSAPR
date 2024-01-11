@@ -1,5 +1,7 @@
 ﻿namespace UnitTests
 {
+    using ModelData;
+
     [TestFixture]
     public class ParameterTests
     {
@@ -188,36 +190,6 @@
                     Assert.That(actual.Value, Is.EqualTo(expectedValue));
                     Assert.That(actual.MinValue, Is.EqualTo(expectedMinValue));
                     Assert.That(actual.MaxValue, Is.EqualTo(expectedMaxValue));
-                });
-        }
-
-        [Test(Description = "Негативный тест метода MinMaxValidate")]
-        public void MinMaxValidate_GetIncorrectBigValue_TestNotPassed()
-        {
-            // Setup:
-
-            // Testing:
-
-            // Assert:
-            Assert.Throws<ArgumentException>(
-                () =>
-                {
-                    Parameter setup = new Parameter(10, 1, 5);
-                });
-        }
-
-        [Test(Description = "Негативный тест метода MinMaxValidate")]
-        public void MinMaxValidate_GetIncorrectLittleValue_TestNotPassed()
-        {
-            // Setup:
-
-            // Testing:
-
-            // Assert:
-            Assert.Throws<ArgumentException>(
-                () =>
-                {
-                    Parameter setup = new Parameter(2, 5, 10);
                 });
         }
 

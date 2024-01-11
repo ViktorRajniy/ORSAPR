@@ -83,7 +83,7 @@
 
         [Test(Description = "Позитивный тест сеттера GroovesCount")]
         [TestCase(10, 10)]
-        public void ParameterValue_SetCorrectValue_ValueIsSetted(
+        public void CircleGroovesParameters_SetCorrectValue_ValueIsSetted(
             double value, double expectedValue)
         {
             // Setup:
