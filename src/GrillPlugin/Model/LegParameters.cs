@@ -1,6 +1,5 @@
 ﻿namespace ModelData
 {
-    using GrillPlugin.Model;
     using System.Collections.Generic;
 
     /// <summary>

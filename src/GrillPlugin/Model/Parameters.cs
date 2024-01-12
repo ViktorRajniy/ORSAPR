@@ -1,7 +1,5 @@
-﻿namespace GrillPlugin.Model
+﻿namespace ModelData
 {
-    using global::ModelData;
-
     /// <summary>
     /// Описание.
     /// </summary>
@@ -57,40 +55,27 @@
         /// <returns>Значение параметра.</returns>
         public Parameter GetParameter(ParameterType type)
         {
-            if (type == ParameterType.BoxLength
-                || type == ParameterType.BoxWidth
-                || type == ParameterType.BoxHeight
-                || type == ParameterType.BoxWallThickness)
+            switch (type)
             {
-                return _boxParameters.GetParameter(type);
+                case ParameterType.BoxLength:
+                case ParameterType.BoxWidth:
+                case ParameterType.BoxHeight:
+                case ParameterType.BoxWallThickness:
+                    return _boxParameters.GetParameter(type);
+                case ParameterType.LegHeight:
+                case ParameterType.LegDiameter:
+                    return _legParameters.GetParameter(type);
+                case ParameterType.CircleHoleHeight:
+                case ParameterType.CircleHoleDiameter:
+                case ParameterType.CircleHoleDistance:
+                case ParameterType.RectangleHoleHeight:
+                    return _rectangleHolesParameters.GetParameter(type);
+                case ParameterType.CircleGrooveDiameter:
+                case ParameterType.CircleGrooveDistance:
+                    return _circleGroovesParameters.GetParameter(type);
+                default:
+                    return _rectangleGroovesParameters.GetParameter(type);
             }
-
-            if (type == ParameterType.LegHeight
-                || type == ParameterType.LegDiameter)
-            {
-                return _legParameters.GetParameter(type);
-            }
-
-            if (type == ParameterType.CircleHoleHeight
-                || type == ParameterType.CircleHoleDiameter
-                || type == ParameterType.CircleHoleDistance
-                || type == ParameterType.BoxWallThickness)
-            {
-                return _circleHolesParameters.GetParameter(type);
-            }
-
-            if (type == ParameterType.RectangleHoleHeight)
-            {
-                return _rectangleHolesParameters.GetParameter(type);
-            }
-
-            if (type == ParameterType.CircleGrooveDiameter
-                || type == ParameterType.CircleGrooveDistance)
-            {
-                return _circleGroovesParameters.GetParameter(type);
-            }
-
-            return _rectangleGroovesParameters.GetParameter(type);
         }
 
         /// <summary>

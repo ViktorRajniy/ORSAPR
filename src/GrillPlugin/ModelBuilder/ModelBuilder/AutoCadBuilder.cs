@@ -2,9 +2,9 @@
 {
     using Autodesk.AutoCAD.ApplicationServices;
     using Autodesk.AutoCAD.DatabaseServices;
-    using GrillPlugin.Model;
     using Autodesk.AutoCAD.Geometry;
     using ModelBuilder;
+    using ModelData;
 
     /// <summary>
     /// Класс строитель мангала.
@@ -260,12 +260,12 @@
         /// <summary>
         /// Метод создаёт массив горизонтально направленных цилиндров.
         /// </summary>
-        /// <param name="diameter">Диаметр отверстия.</param>
-        /// <param name="distance">Расстояние между отверстиями.</param>
-        /// <param name="count">Количество отверстий.</param>
-        /// <param name="deep">Глубина выреза.</param>
-        /// <param name="height">Высота центра отверстия.</param>
-        /// <returns></returns>
+        /// <param name="startPoint">Точка старта.</param>
+        /// <param name="diameter">Диаметр цилиндра.</param>
+        /// <param name="distance">Расстояние между цилиндрами.</param>
+        /// <param name="count">Количество цилиндров.</param>
+        /// <param name="deep">Глубина цилиндра.</param>
+        /// <returns>Солид цилиндров.</returns>
         private Solid3d BuildCircleArray(
             Point3d startPoint,
             double diameter,
@@ -373,12 +373,13 @@
         /// <summary>
         /// Метод создаёт массив горизонтально направленных параллелепипедов.
         /// </summary>
-        /// <param name="diameter">Диаметр отверстия.</param>
-        /// <param name="distance">Расстояние между отверстиями.</param>
-        /// <param name="count">Количество отверстий.</param>
-        /// <param name="deep">Глубина выреза.</param>
-        /// <param name="height">Высота центра отверстия.</param>
-        /// <returns></returns>
+        /// <param name="startPoint">Начальная точка.</param>
+        /// <param name="width">Ширина параллелепипеда.</param>
+        /// <param name="length">Длина параллелепипеда.</param>
+        /// <param name="height">Высота параллелепипеда.</param>
+        /// <param name="distance">Расстояние между параллелепипедами.</param>
+        /// <param name="count">Количество параллелепипедов.</param>
+        /// <returns>Солид массива параллелепипедов.</returns>
         private Solid3d BuildParallelepipedArray(
             Point3d startPoint,
             double width,
@@ -469,10 +470,11 @@
         /// <summary>
         /// Метод строит горизонтальный параллелепипед по заданным параметрам.
         /// </summary>
-        /// <param name="center">Центр окружности начала.</param>
-        /// <param name="diameter">Диаметр цилиндра.</param>
-        /// <param name="deep">Глубина цилиндра.</param>
-        /// <returns></returns>
+        /// <param name="center">Центр параллелепипеда.</param>
+        /// <param name="lenght">Длина параллелепипеда.</param>
+        /// <param name="width">Ширина параллелепипеда.</param>
+        /// <param name="height">Высота параллелепипеда.</param>
+        /// <returns>Солид параллелепипеда.</returns>
         private Solid3d BuildHorisontalParallelepiped(
             Point3d center,
             double lenght,

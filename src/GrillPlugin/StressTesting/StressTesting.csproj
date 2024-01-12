@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModelBuilder\ModelBuilder\ModelBuilder.csproj">
-      <Project>{CEF32B94-23D3-4601-9A5C-219B43371939}</Project>
+      <Project>{cef32b94-23d3-4601-9a5c-219b43371939}</Project>
       <Name>ModelBuilder</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\ModelData.csproj">
-      <Project>{53A6C1AD-E91F-49B5-B9B3-023ADA8F1904}</Project>
+      <Project>{53a6c1ad-e91f-49b5-b9b3-023ada8f1904}</Project>
       <Name>ModelData</Name>
     </ProjectReference>
   </ItemGroup>

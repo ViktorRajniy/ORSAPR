@@ -1,10 +1,10 @@
-﻿using System.Diagnostics;
-using GrillPlugin.Model;
-using ModelAPI;
-using Microsoft.VisualBasic.Devices;
-using Autodesk.AutoCAD.Runtime;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
-using System;
+using Autodesk.AutoCAD.Runtime;
+using Microsoft.VisualBasic.Devices;
+using ModelAPI;
+using ModelData;
 
 /// <summary>
 /// Класс нагрузочного тестирования.
@@ -26,7 +26,8 @@ public class StressTests
 
         StreamWriter writer = new StreamWriter($"MaxLog.txt", false);
 
-        AutoCadBuilder autoCadBuilder = new AutoCadBuilder(parameters, true, true);
+        AutoCadBuilder autoCadBuilder =
+            new AutoCadBuilder(parameters, true, true);
 
         Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
         var count = 0;

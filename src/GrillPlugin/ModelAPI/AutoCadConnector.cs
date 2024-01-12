@@ -1,6 +1,7 @@
-﻿namespace GrillPlugin.Model
+﻿namespace ModelAPI
 {
     using Autodesk.AutoCAD.Runtime;
+    using View;
 
     /// <summary>
     /// Обёртка для работы с API.

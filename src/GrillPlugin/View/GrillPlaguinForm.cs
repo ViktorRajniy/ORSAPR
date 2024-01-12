@@ -1,11 +1,11 @@
-﻿namespace GrillPlugin
+﻿namespace View
 {
     using System;
     using System.Collections.Generic;
     using System.Drawing;
     using System.Windows.Forms;
-    using GrillPlugin.Model;
     using ModelAPI;
+    using ModelData;
 
     /// <summary>
     /// Главная форма приложения.
@@ -292,16 +292,10 @@
                 }
             }
 
-            if (_errorString != string.Empty)
-            {
-                ErrorLable.Text = _errorString;
-                ErrorLable.BackColor = _errorColor;
-            }
-            else
-            {
-                ErrorLable.Text = _errorString;
-                ErrorLable.BackColor = _defaultColor;
-            }
+            ErrorLable.Text = _errorString;
+            ErrorLable.BackColor = _errorString != string.Empty
+                ? _errorColor
+                : _defaultColor;
         }
 
         /// <summary>

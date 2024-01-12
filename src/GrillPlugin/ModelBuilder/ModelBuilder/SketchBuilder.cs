@@ -12,9 +12,9 @@
         /// Создает эскиз в виде окружности.
         /// </summary>
         /// <param name="center">Центр окружности.</param>
-        /// <param name="normal">Нормаль окружности.</param>
-        /// <param name="radius">Радиус окружности.</param>
-        /// <returns>Созданная окружность.</returns>
+        /// <param name="axis">Нормаль окружности.</param>
+        /// <param name="diameter">Диаметр окружности.</param>
+        /// <returns>Регион окружности.</returns>
         public static Region CreateCircle(Point3d center, Vector3d axis, double diameter)
         {
             Circle circle = new Circle(center, axis, diameter / 2);
@@ -36,9 +36,9 @@
         /// </summary>
         /// <param name="width">Ширина прямоугольника.</param>
         /// <param name="length">Длина прямоугольника.</param>
-        /// <param name="offset">Отступ от границ тела.</param>
-        /// <returns>Прямоугольник.</returns>
-         public static Region CreateRectangle(
+        /// <param name="center">Центр прямоугольника.</param>
+        /// <returns>Регион прямоугольника.</returns>
+        public static Region CreateRectangle(
             double width,
             double length,
             Point3d center)

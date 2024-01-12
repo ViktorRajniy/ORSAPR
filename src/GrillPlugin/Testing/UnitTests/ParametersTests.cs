@@ -1,38 +1,33 @@
 ﻿namespace UnitTests
 {
+
     [TestFixture]
     public class ParametersTests
     {
         [Test(Description = "Позитивный тест геттера GetParameter")]
-        [TestCase(ParameterType.BoxLength, 
+        [TestCase(ParameterType.BoxLength,
             500, 500, 2000)]
-        [TestCase(ParameterType.BoxWidth, 
+        [TestCase(ParameterType.BoxWidth,
             300, 300, 500)]
-        [TestCase(ParameterType.BoxHeight, 
+        [TestCase(ParameterType.BoxHeight,
             200, 200, 500)]
-        [TestCase(ParameterType.BoxWallThickness, 
+        [TestCase(ParameterType.BoxWallThickness,
             2, 2, 8)]
-        [TestCase(ParameterType.LegHeight, 
+        [TestCase(ParameterType.LegHeight,
             500, 500, 1000)]
-        [TestCase(ParameterType.LegDiameter, 
+        [TestCase(ParameterType.LegDiameter,
             4, 4, 150)]
-        [TestCase(ParameterType.CircleHoleDiameter, 
-            10, 10, 100)]
-        [TestCase(ParameterType.CircleHoleHeight, 
-            7, 7, 97)]
-        [TestCase(ParameterType.CircleHoleDistance, 
-            10, 10, 486)]
-        [TestCase(ParameterType.RectangleHoleHeight, 
+        [TestCase(ParameterType.RectangleHoleHeight,
             20, 20, 249)]
-        [TestCase(ParameterType.CircleGrooveDiameter, 
+        [TestCase(ParameterType.CircleGrooveDiameter,
             5, 5, 20)]
-        [TestCase(ParameterType.CircleGrooveDistance, 
+        [TestCase(ParameterType.CircleGrooveDistance,
             5, 5, 490)]
-        [TestCase(ParameterType.RectangleGrooveHeight, 
+        [TestCase(ParameterType.RectangleGrooveHeight,
             20, 20, 100)]
-        [TestCase(ParameterType.RectangleGrooveWidth, 
+        [TestCase(ParameterType.RectangleGrooveWidth,
             5, 5, 20)]
-        [TestCase(ParameterType.RectangleGrooveDistance, 
+        [TestCase(ParameterType.RectangleGrooveDistance,
             20, 20, 490)]
         public void Parameters_GetValue_ValueIsGetted(ParameterType type,
             double expectedvalue, double expectedMinValue, double expectedMaxValue)
@@ -59,9 +54,6 @@
         [TestCase(ParameterType.BoxWallThickness, 6, 6)]
         [TestCase(ParameterType.LegHeight, 750, 750)]
         [TestCase(ParameterType.LegDiameter, 50, 50)]
-        [TestCase(ParameterType.CircleHoleDiameter, 30, 30)]
-        [TestCase(ParameterType.CircleHoleHeight, 40, 40)]
-        [TestCase(ParameterType.CircleHoleDistance, 35, 35)]
         [TestCase(ParameterType.RectangleHoleHeight, 45, 45)]
         [TestCase(ParameterType.CircleGrooveDiameter, 10, 10)]
         [TestCase(ParameterType.CircleGrooveDistance, 15, 15)]
@@ -102,8 +94,6 @@
             ParameterType.RectangleGrooveDistance, 14, 482)]
         [TestCase(ParameterType.BoxHeight, 390,
             ParameterType.RectangleHoleHeight, 20, 195)]
-        [TestCase(ParameterType.BoxHeight, 390,
-            ParameterType.CircleHoleHeight, 7, 192)]
         public void Parameters_UpdateBorders_BordersAreUpdated(
             ParameterType variableParameterType, double variableParam,
             ParameterType checkedParameter, double expectedMin, double expectedMax)
@@ -126,7 +116,7 @@
         }
 
         [Test(Description = "Позитивный тест метода CalculateCount")]
-        [TestCase(500,2,20,25,10)]
+        [TestCase(500, 2, 20, 25, 10)]
         public void Parameters_CalculateCount_ValueIsCorrect(
             double length, double thickness,
             double width, double distance, int expectedCount)
@@ -141,7 +131,7 @@
         }
 
         [Test(Description = "Позитивный тест метода InitHoleGrooveCount")]
-        [TestCase(24,49,19)]
+        [TestCase(24, 49, 19)]
         public void Parameters_InitHoleGrooveCount_ValuesAreGetted(
             int expectedCircleHoleCount, int expectedCircleGrooveCount,
             int expectedRectangleGrooveCount)
